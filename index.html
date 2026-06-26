@@ -142,15 +142,6 @@
                 
                 <!-- 1. DASHBOARD VIEW -->
                 <section id="view-dashboard" class="space-y-6">
-                    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-8 text-white shadow-xl shadow-blue-900/10 relative overflow-hidden" id="dashboard-banner">
-                        <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-white/10 rounded-full blur-2xl"></div>
-                        <div class="absolute -left-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
-                        <div class="relative z-10 max-w-xl">
-                            <span class="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-2.5 py-1 rounded-full border border-white/20">Studio Terintegrasi</span>
-                            <h3 class="text-3xl font-black mt-4 mb-2 tracking-tight">Transformasikan Naskah Laptop Menjadi Audio Menjual</h3>
-                            <p class="text-blue-100 text-sm leading-relaxed">Gunakan teknologi kecerdasan buatan Gemini untuk merancang skrip promosi serta memproduksi voice-over alami berintonasi emosi manusia yang memikat pembeli.</p>
-                        </div>
-                    </div>
 
                     <!-- Statistics Cards Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4">
@@ -1148,6 +1139,14 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
                     --accent-rgb: ${theme.accentRgb};
                 }
             `;
+
+            // Dynamically change Tailwind colored elements
+            const elements = [
+                { id: 'brand-logo-bg', bg: true },
+                { id: 'save-api-btn', bg: true },
+                { id: 'generate-voice-btn', bg: true },
+                { id: 'ai-apply-script', bg: true }
+            ];
 
             // Re-render components to reflect theme
             renderThemes();
