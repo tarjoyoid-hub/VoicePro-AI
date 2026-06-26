@@ -486,27 +486,27 @@
                     <!-- Hidden system log frame to preserve JS function safety without errors -->
                     <div id="system-log-screen" class="hidden"></div>
 
-                    <!-- 3. AI TEMPLATE GENERATOR VIEW -->
-                                <div class="text-blue-400">[INFO] Database Local-In-Memory & IndexedDB siap digunakan.</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
                 <!-- 3. AI TEMPLATE GENERATOR VIEW -->
                 <section id="view-ai-script" class="hidden space-y-6">
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                        <h3 class="font-bold text-slate-800 text-base mb-1 flex items-center gap-2">
-                            <i data-lucide="sparkles" class="w-5 h-5 text-blue-600" id="icon-ai-script"></i> Pembuat Naskah Promo dengan Gemini AI
+                    <div class="flex flex-col gap-2">
+                        <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                            <i data-lucide="sparkles" class="w-6 h-6 text-indigo-600" id="icon-ai-script"></i> Pembuat Naskah Promo dengan Gemini AI
                         </h3>
-                        <p class="text-xs text-slate-400 mb-6">Secara cerdas merancang naskah penjualan berdasarkan rincian spesifikasi produk laptop & aksesoris Anda.</p>
+                        <p class="text-xs text-slate-400">Rancang naskah copywriting teknologi super konversif dalam hitungan detik.</p>
+                    </div>
 
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <!-- Column Form -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <!-- Column Form: Left Parameter inputs -->
+                        <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+                            <div class="border-b border-slate-100 pb-3 flex items-center gap-2">
+                                <i data-lucide="sliders" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-bold text-slate-700">Parameter Produk</span>
+                            </div>
+
                             <div class="space-y-4">
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-500 mb-1.5">Jenis Produk</label>
-                                    <select id="ai-product-type" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                    <label class="block text-xs font-bold text-slate-500 mb-1.5">Kategori / Jenis Produk</label>
+                                    <select id="ai-product-type" class="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20">
                                         <option value="Laptop Gaming">Laptop Gaming</option>
                                         <option value="Laptop Kantor">Laptop Kantor</option>
                                         <option value="Laptop Murah">Laptop Murah</option>
@@ -526,41 +526,41 @@
                                 <div class="grid grid-cols-2 gap-3">
                                     <div>
                                         <label class="block text-xs font-bold text-slate-500 mb-1.5">Nama Produk</label>
-                                        <input type="text" id="ai-prod-name" value="ZenBook Duo" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                        <input type="text" id="ai-prod-name" value="ZenBook Duo" class="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20">
                                     </div>
                                     <div>
                                         <label class="block text-xs font-bold text-slate-500 mb-1.5">Merek</label>
-                                        <input type="text" id="ai-prod-brand" value="ASUS" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                        <input type="text" id="ai-prod-brand" value="ASUS" class="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20">
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-3">
                                     <div>
                                         <label class="block text-xs font-bold text-slate-500 mb-1.5">Prosesor</label>
-                                        <input type="text" id="ai-prod-cpu" value="Intel Core Ultra 9" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                        <input type="text" id="ai-prod-cpu" value="Intel Core Ultra 9" class="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20">
                                     </div>
                                     <div>
                                         <label class="block text-xs font-bold text-slate-500 mb-1.5">Kapasitas RAM</label>
-                                        <input type="text" id="ai-prod-ram" value="32GB LPDDR5X" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                        <input type="text" id="ai-prod-ram" value="32GB LPDDR5X" class="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20">
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-3">
                                     <div>
                                         <label class="block text-xs font-bold text-slate-500 mb-1.5">Penyimpanan SSD</label>
-                                        <input type="text" id="ai-prod-ssd" value="2TB PCIe Gen4" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                        <input type="text" id="ai-prod-ssd" value="2TB PCIe Gen4" class="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20">
                                     </div>
                                     <div>
                                         <label class="block text-xs font-bold text-slate-500 mb-1.5">Kartu Grafis (VGA)</label>
-                                        <input type="text" id="ai-prod-vga" value="Intel Arc Graphics" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                        <input type="text" id="ai-prod-vga" value="Intel Arc Graphics" class="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20">
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-3">
                                     <div>
                                         <label class="block text-xs font-bold text-slate-500 mb-1.5">Harga Promo</label>
-                                        <input type="text" id="ai-prod-price" value="Rp 31.999.000" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                        <input type="text" id="ai-prod-price" value="Rp 31.999.000" class="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20">
                                     </div>
                                     <div>
                                         <label class="block text-xs font-bold text-slate-500 mb-1.5">Kondisi</label>
-                                        <select id="ai-prod-condition" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                        <select id="ai-prod-condition" class="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20">
                                             <option value="Baru, Garansi Resmi 2 Tahun" selected>Baru, Garansi Resmi</option>
                                             <option value="Bekas Berkualitas, Mulus 98%">Bekas Mulus (Second)</option>
                                         </select>
@@ -568,41 +568,44 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-slate-500 mb-1.5">Bonus & Nilai Tambah</label>
-                                    <input type="text" id="ai-prod-bonus" value="Sleeve Case Eksklusif, ASUS Stylus Pen, Office Home & Student Seumur Hidup" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                    <input type="text" id="ai-prod-bonus" value="Sleeve Case Eksklusif, ASUS Stylus Pen, Office Home & Student Seumur Hidup" class="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20">
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-slate-500 mb-1.5">Target Konsumen Utama</label>
-                                    <input type="text" id="ai-prod-target" value="Kreator konten profesional, eksekutif bisnis, programmer tingkat lanjut" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                    <input type="text" id="ai-prod-target" value="Kreator konten profesional, eksekutif bisnis, programmer tingkat lanjut" class="w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20">
                                 </div>
-                                <button id="ai-generate-script-btn" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-indigo-500/20 transition-all flex items-center justify-center gap-2">
-                                    <i data-lucide="wand2" class="w-4 h-4"></i> Racik Naskah Otomatis
-                                </button>
                             </div>
 
-                            <!-- Generated Output Panel -->
-                            <div class="lg:col-span-2 bg-slate-50 rounded-2xl p-6 border border-slate-200 flex flex-col justify-between">
-                                <div class="space-y-4">
-                                    <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-                                        <span class="text-xs font-bold text-slate-600">Draft Hasil Gemini AI</span>
-                                        <button id="ai-copy-script" class="px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 text-[11px] font-bold rounded-lg flex items-center gap-1 hover:bg-slate-50 transition-all" disabled>
-                                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> Salin Naskah
-                                        </button>
-                                    </div>
+                            <button id="ai-generate-script-btn" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-indigo-500/20 transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="wand2" class="w-4 h-4"></i> Racik Naskah Otomatis
+                            </button>
+                        </div>
 
-                                    <!-- Output Blocks -->
-                                    <div class="space-y-4 overflow-y-auto max-h-[420px] pr-2 custom-scrollbar" id="ai-output-blocks">
-                                        <div class="text-center py-20 text-slate-400 space-y-2">
-                                            <i data-lucide="text" class="w-10 h-10 mx-auto opacity-30"></i>
-                                            <p class="text-xs font-medium">Isi parameter produk di sebelah kiri dan klik tombol di bawah untuk menghasilkan draf promosi naskah terstruktur!</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="border-t border-slate-200 pt-4 flex gap-3">
-                                    <button id="ai-apply-script" class="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2" disabled>
-                                        <i data-lucide="arrow-right-left" class="w-4 h-4"></i> Gunakan di Voice Generator
+                        <!-- Generated Output Panel -->
+                        <div class="lg:col-span-7 flex flex-col justify-between bg-white border border-slate-200 shadow-sm rounded-2xl p-6">
+                            <div class="space-y-4 flex-1">
+                                <div class="flex items-center justify-between border-b border-slate-100 pb-3.5">
+                                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                                        <i data-lucide="file-check" class="w-4 h-4 text-emerald-500"></i> Hasil Copywriting AI
+                                    </span>
+                                    <button id="ai-copy-script" class="px-3 py-1.5 bg-slate-50 border border-slate-200 text-slate-600 text-xs font-bold rounded-lg flex items-center gap-1 hover:bg-slate-100 transition-all" disabled>
+                                        <i data-lucide="copy" class="w-3.5 h-3.5"></i> Salin Naskah
                                     </button>
                                 </div>
+
+                                <!-- Output Blocks with improved responsive UI -->
+                                <div class="space-y-4 overflow-y-auto max-h-[480px] pr-2 custom-scrollbar" id="ai-output-blocks">
+                                    <div class="text-center py-24 text-slate-400 space-y-3">
+                                        <i data-lucide="text" class="w-12 h-12 mx-auto opacity-30"></i>
+                                        <p class="text-xs font-bold text-slate-500">Isi parameter produk di sebelah kiri dan klik tombol "Racik Naskah Otomatis" untuk memulai.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-slate-100 pt-4 mt-4">
+                                <button id="ai-apply-script" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2" disabled>
+                                    <i data-lucide="arrow-right-left" class="w-4 h-4"></i> Gunakan di Voice Generator
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -610,54 +613,58 @@
 
                 <!-- 4. MANUAL TEMPLATE VIEW -->
                 <section id="view-templates" class="hidden space-y-6">
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
-                            <h3 class="font-bold text-slate-800 text-base">Manajemen Template Naskah Manual</h3>
-                            <p class="text-xs text-slate-400">Atur pustaka naskah kustom Anda agar bisa diakses berulang kali dengan cepat.</p>
+                            <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                                <i data-lucide="book-template" class="w-6 h-6 text-blue-600"></i> Manajemen Template Naskah Manual
+                            </h3>
+                            <p class="text-xs text-slate-400">Kelola pustaka naskah kustom Anda secara modular dan cepat.</p>
                         </div>
-                        <button onclick="openTemplateModal()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all flex items-center gap-2">
-                            <i data-lucide="plus" class="w-4 h-4"></i> Tambah Baru
+                        <button onclick="openTemplateModal()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all flex items-center justify-center gap-2 self-start sm:self-auto">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Tambah Template
                         </button>
                     </div>
 
                     <!-- Filter Categorization -->
-                    <div class="flex flex-wrap gap-2" id="template-categories-filter">
-                        <button class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white" onclick="filterTemplates('Semua')">Semua</button>
-                        <button class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-white text-slate-600 hover:bg-slate-50 border border-slate-200" onclick="filterTemplates('Laptop')">Laptop</button>
-                        <button class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-white text-slate-600 hover:bg-slate-50 border border-slate-200" onclick="filterTemplates('PC Rakitan')">PC & Komputer</button>
-                        <button class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-white text-slate-600 hover:bg-slate-50 border border-slate-200" onclick="filterTemplates('Aksesoris')">Aksesoris</button>
+                    <div class="bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm flex flex-wrap gap-1.5" id="template-categories-filter">
+                        <button class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white" onclick="filterTemplates('Semua')">Semua</button>
+                        <button class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all bg-slate-50 text-slate-600 hover:bg-slate-100" onclick="filterTemplates('Laptop')">Laptop</button>
+                        <button class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all bg-slate-50 text-slate-600 hover:bg-slate-100" onclick="filterTemplates('PC Rakitan')">PC & Komputer</button>
+                        <button class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all bg-slate-50 text-slate-600 hover:bg-slate-100" onclick="filterTemplates('Aksesoris')">Aksesoris</button>
                     </div>
 
                     <!-- Template Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="templates-grid">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in" id="templates-grid">
                         <!-- Populated by JS -->
                     </div>
                 </section>
 
                 <!-- 5. HISTORY VIEW -->
                 <section id="view-history" class="hidden space-y-6">
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
-                            <h3 class="font-bold text-slate-800 text-base">Riwayat Produksi Voice Over</h3>
-                            <p class="text-xs text-slate-400">Arsip otomatis seluruh audio voice-over yang telah diproses di dalam studio.</p>
+                            <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                                <i data-lucide="history" class="w-6 h-6 text-indigo-600"></i> Riwayat Produksi Voice Over
+                            </h3>
+                            <p class="text-xs text-slate-400">Arsip otomatis seluruh audio voice-over yang telah dikonversi.</p>
                         </div>
-                        <button id="clear-all-history" class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold rounded-xl transition-all flex items-center gap-2">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i> Bersihkan Semua Riwayat
+                        <button id="clear-all-history" class="px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-2 self-start sm:self-auto">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i> Bersihkan Semua
                         </button>
                     </div>
 
-                    <!-- Desktop Tables for High Density -->
+                    <!-- High Density Responsive Table -->
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="overflow-x-auto custom-scrollbar">
                             <table class="w-full text-left border-collapse">
                                 <thead class="bg-slate-50/80 border-b border-slate-200">
                                     <tr>
-                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Favorit</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-16 text-center">Favorit</th>
                                         <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nama & Detail File</th>
-                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Format Model</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-40">Model Suara</th>
                                         <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Konfigurasi</th>
-                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tanggal</th>
-                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Aksi</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-36">Tanggal</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right w-36">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="history-table-body" class="divide-y divide-slate-100 text-xs">
@@ -670,36 +677,42 @@
 
                 <!-- 6. BACKUP & RESTORE VIEW -->
                 <section id="view-backup" class="hidden space-y-6">
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                        <h3 class="font-bold text-slate-800 text-base mb-1">Manajemen & Backup Data Eksternal</h3>
-                        <p class="text-xs text-slate-400 mb-6">Backup, pulihkan, dan amankan seluruh konfigurasi riwayat audio, template naskah, dan pengaturan studio.</p>
+                    <div class="flex flex-col gap-1">
+                        <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                            <i data-lucide="download-cloud" class="w-6 h-6 text-blue-600"></i> Manajemen & Backup Data Eksternal
+                        </h3>
+                        <p class="text-xs text-slate-400">Backup, pulihkan, dan amankan seluruh konfigurasi riwayat audio atau template naskah.</p>
+                    </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div class="space-y-4">
-                                <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">Ekspor Data & Backup</h4>
-                                <p class="text-xs text-slate-500 leading-relaxed">Ekspor seluruh riwayat database teks, durasi, status favorit, dan preferensi pengaturan ke dalam berkas standar.</p>
-                                <div class="flex flex-col gap-2">
-                                    <button onclick="exportHistory('json')" class="py-2.5 px-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-between transition-all">
-                                        <span class="flex items-center gap-2"><i data-lucide="file-json" class="w-4 h-4 text-amber-500"></i> Ekspor Riwayat (JSON)</span>
-                                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                                    </button>
-                                    <button onclick="exportHistory('csv')" class="py-2.5 px-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-between transition-all">
-                                        <span class="flex items-center gap-2"><i data-lucide="sheet" class="w-4 h-4 text-emerald-500"></i> Ekspor CSV Riwayat</span>
-                                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                                    </button>
-                                </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                            <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                                <i data-lucide="file-output" class="w-4 h-4 text-slate-400"></i>
+                                <h4 class="font-bold text-slate-700 text-sm">Ekspor Data & Backup</h4>
                             </div>
+                            <p class="text-xs text-slate-500 leading-relaxed">Ekspor seluruh riwayat database teks, durasi, status favorit, dan preferensi pengaturan ke dalam berkas standar.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                                <button onclick="exportHistory('json')" class="py-3 px-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition-all">
+                                    <i data-lucide="file-json" class="w-4 h-4 text-amber-500"></i> Ekspor JSON
+                                </button>
+                                <button onclick="exportHistory('csv')" class="py-3 px-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition-all">
+                                    <i data-lucide="sheet" class="w-4 h-4 text-emerald-500"></i> Ekspor CSV
+                                </button>
+                            </div>
+                        </div>
 
-                            <div class="space-y-4">
-                                <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">Pulihkan Data (Restore)</h4>
-                                <p class="text-xs text-slate-500 leading-relaxed">Masukkan berkas JSON hasil ekspor cadangan Vora Studio Anda untuk memulihkan seluruh draf atau data lama.</p>
-                                
-                                <div class="border-2 border-dashed border-slate-200 rounded-xl p-6 text-center space-y-3 cursor-pointer hover:border-blue-500/50 transition-all" onclick="document.getElementById('import-restore-file').click()">
-                                    <i data-lucide="upload-cloud" class="w-8 h-8 mx-auto text-slate-400"></i>
-                                    <span class="text-xs font-bold text-slate-600 block">Klik di sini untuk upload backup</span>
-                                    <span class="text-[10px] text-slate-400 block">Format yang didukung: .json</span>
-                                    <input type="file" id="import-restore-file" accept=".json" class="hidden">
-                                </div>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                            <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                                <i data-lucide="file-input" class="w-4 h-4 text-slate-400"></i>
+                                <h4 class="font-bold text-slate-700 text-sm">Pulihkan Data (Restore)</h4>
+                            </div>
+                            <p class="text-xs text-slate-500 leading-relaxed">Masukkan berkas JSON hasil ekspor cadangan Vora Studio Anda untuk memulihkan seluruh draf atau data lama.</p>
+                            
+                            <div class="border-2 border-dashed border-slate-200 rounded-xl p-5 text-center space-y-3 cursor-pointer hover:border-blue-500/50 transition-all bg-slate-50/50 hover:bg-slate-50" onclick="document.getElementById('import-restore-file').click()">
+                                <i data-lucide="upload-cloud" class="w-8 h-8 mx-auto text-slate-400"></i>
+                                <span class="text-xs font-bold text-slate-600 block">Klik di sini untuk upload backup</span>
+                                <span class="text-[10px] text-slate-400 block">Hanya berkas berformat (.json)</span>
+                                <input type="file" id="import-restore-file" accept=".json" class="hidden">
                             </div>
                         </div>
                     </div>
@@ -707,29 +720,38 @@
 
                 <!-- 7. SETTINGS VIEW -->
                 <section id="view-settings" class="hidden space-y-6">
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                        <h3 class="font-bold text-slate-800 text-base mb-1">Pengaturan Tambahan & Kustomisasi Studio</h3>
-                        <p class="text-xs text-slate-400 mb-6">Sesuaikan performa generator suara, keamanan sistem, dan visual antarmuka pengguna.</p>
+                    <div class="flex flex-col gap-1">
+                        <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                            <i data-lucide="settings" class="w-6 h-6 text-indigo-600"></i> Pengaturan Tambahan & Kustomisasi Studio
+                        </h3>
+                        <p class="text-xs text-slate-400">Sesuaikan gaya warna studio, performa generator suara, keamanan sistem, dan visual antarmuka.</p>
+                    </div>
 
-                        <!-- Theme Picker Area -->
-                        <div class="space-y-4">
-                            <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">Pilih Gaya Warna Studio (20 Pilihan Tema)</h4>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3" id="theme-grid">
-                                <!-- Generated Dynamically by JS -->
-                            </div>
+                    <!-- Theme Picker Area -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+                        <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                            <i data-lucide="palette" class="w-4 h-4 text-indigo-500"></i>
+                            <h4 class="font-bold text-slate-700 text-sm uppercase tracking-wider">Pilih Gaya Warna Studio (20 Pilihan Tema)</h4>
                         </div>
+                        
+                        <!-- Beautiful Theme Grid of 20 color options -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3" id="theme-grid">
+                            <!-- Generated Dynamically by JS -->
+                        </div>
+                    </div>
 
-                        <!-- Gemini Advanced Prompt Guideline (Read-Only Preview) -->
-                        <div class="border-t border-slate-200 mt-8 pt-8 space-y-4">
-                            <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">Sistem Prompt Rekayasa Intonasi (Gemini Guardrails)</h4>
-                            <p class="text-xs text-slate-500 leading-relaxed">Vora secara otomatis menyisipkan filter linguistik cerdas untuk menekan nada robotik, memastikan pelafalan singkatan seperti (Intel, SSD, VGA, RAM) diucapkan alami dalam format ejaan komersial Indonesia asli.</p>
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 font-mono text-[11px] text-slate-500 whitespace-pre-wrap leading-relaxed">
-Sistem akan menginstruksikan model Gemini TTS untuk:
+                    <!-- Gemini Advanced Prompt Guideline (Read-Only Preview) -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                            <i data-lucide="cpu" class="w-4 h-4 text-indigo-500"></i>
+                            <h4 class="font-bold text-slate-700 text-sm uppercase tracking-wider">Sistem Prompt Rekayasa Intonasi (Gemini Guardrails)</h4>
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">Vora secara otomatis menyisipkan filter linguistik cerdas untuk menekan nada robotik, memastikan pelafalan singkatan seperti (Intel, SSD, VGA, RAM) diucapkan alami dalam format ejaan komersial Indonesia asli.</p>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 font-mono text-[11px] text-slate-500 whitespace-pre-wrap leading-relaxed">Sistem akan menginstruksikan model Gemini TTS untuk:
 - Menerjemahkan emosi gaya bicara ke dalam nada dinamis.
 - Menghentikan suara pada spasi atau tanda baca secara alami.
 - Melafalkan istilah spesifikasi laptop dengan logat tech reviewer handal Indonesia.
 - Menyusun gelombang frekuensi yang ramah dan meyakinkan di telinga calon pembeli.</div>
-                        </div>
                     </div>
                 </section>
 
@@ -1053,6 +1075,8 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
                 colorClasses = "bg-blue-50 text-blue-800 border-blue-200";
             }
 
+            toast.className += " " + colorClasses;
+
             toast.innerHTML = `
                 <div class="flex items-center gap-2">
                     <i data-lucide="${icon}" class="w-4 h-4"></i>
@@ -1100,19 +1124,21 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
             if (quickSelect) quickSelect.innerHTML = "";
 
             themes.forEach(t => {
-                // Render Settings Grid Cards
+                // Render Settings Grid Cards (Premium Card design)
                 const card = document.createElement("button");
                 card.onclick = () => applyTheme(t.id);
-                card.className = `p-3 rounded-xl border flex items-center justify-between transition-all font-bold text-xs bg-white ${activeThemeId === t.id ? 'border-2 ring-2' : 'border-slate-200 hover:border-slate-300'}`;
+                card.className = `p-4 rounded-xl border flex flex-col justify-between gap-3 text-left transition-all relative overflow-hidden bg-white hover:shadow-md ${activeThemeId === t.id ? 'border-2 ring-2 ring-indigo-100 shadow-sm' : 'border-slate-100 hover:border-slate-200'}`;
                 card.style.borderColor = activeThemeId === t.id ? `rgb(${t.rgb})` : '';
-                card.style.color = `rgb(${t.rgb})`;
                 
                 card.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <span class="w-4 h-4 rounded-full" style="background-color: rgb(${t.rgb})"></span>
-                        <span>${t.name}</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-5 h-5 rounded-full border border-slate-100 shadow-sm" style="background-color: rgb(${t.rgb})"></span>
+                        <span class="font-bold text-xs text-slate-800">${t.name}</span>
                     </div>
-                    ${activeThemeId === t.id ? '<i data-lucide="check" class="w-4 h-4"></i>' : ''}
+                    <div class="flex justify-between items-center w-full">
+                        <span class="text-[10px] text-slate-400 font-medium">RGB: ${t.rgb}</span>
+                        ${activeThemeId === t.id ? `<span class="w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center text-white" style="background-color: rgb(${t.rgb})"><i data-lucide="check" class="w-3 h-3"></i></span>` : ''}
+                    </div>
                 `;
                 grid.appendChild(card);
 
@@ -1463,13 +1489,29 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
             const grid = document.getElementById("templates-grid");
             grid.innerHTML = "";
 
+            if (manualTemplates.length === 0) {
+                grid.className = "grid grid-cols-1 gap-6 w-full";
+                grid.innerHTML = `
+                    <div class="col-span-full bg-white p-12 rounded-2xl border border-slate-200 shadow-sm text-center space-y-3">
+                        <i data-lucide="book" class="w-12 h-12 mx-auto text-slate-300"></i>
+                        <h4 class="font-bold text-slate-800 text-sm">Pustaka Template Kosong</h4>
+                        <p class="text-xs text-slate-400 max-w-sm mx-auto">Tulis naskah manual Anda dan kumpulkan di sini untuk mempercepat penyusunan VO mendatang.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                updateDashboardStats();
+                return;
+            }
+
+            grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in";
+
             manualTemplates.forEach(tpl => {
                 const card = document.createElement("div");
-                card.className = "bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4";
+                card.className = "bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-all";
                 card.innerHTML = `
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <span class="px-2 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-lg border border-blue-100 uppercase tracking-wider">${tpl.category}</span>
+                            <span class="px-2.5 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-lg border border-blue-100 uppercase tracking-wider">${tpl.category}</span>
                             <div class="flex items-center gap-1">
                                 <button onclick="editTemplate('${tpl.id}')" class="p-1 hover:bg-slate-100 rounded text-slate-500 hover:text-slate-800" title="Edit">
                                     <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
@@ -1482,7 +1524,7 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
                         <h4 class="font-bold text-slate-800 text-sm mb-2 line-clamp-1">${tpl.title}</h4>
                         <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">${tpl.text}</p>
                     </div>
-                    <button onclick="useTemplateToEditor('${tpl.id}')" class="w-full py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all">
+                    <button onclick="useTemplateToEditor('${tpl.id}')" class="w-full py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all">
                         <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> Gunakan Naskah
                     </button>
                 `;
@@ -1496,9 +1538,9 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
             // Apply visual filter styling
             document.querySelectorAll("#template-categories-filter button").forEach(btn => {
                 if (btn.textContent === cat) {
-                    btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white";
+                    btn.className = "px-4 py-1.5 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white";
                 } else {
-                    btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all bg-white text-slate-600 hover:bg-slate-50 border border-slate-200";
+                    btn.className = "px-4 py-1.5 rounded-lg text-xs font-bold transition-all bg-slate-50 text-slate-600 hover:bg-slate-100";
                 }
             });
 
@@ -1508,11 +1550,11 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
             grid.innerHTML = "";
             items.forEach(tpl => {
                 const card = document.createElement("div");
-                card.className = "bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4";
+                card.className = "bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-all";
                 card.innerHTML = `
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <span class="px-2 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-lg border border-blue-100 uppercase tracking-wider">${tpl.category}</span>
+                            <span class="px-2.5 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-lg border border-blue-100 uppercase tracking-wider">${tpl.category}</span>
                             <div class="flex items-center gap-1">
                                 <button onclick="editTemplate('${tpl.id}')" class="p-1 hover:bg-slate-100 rounded text-slate-500 hover:text-slate-800">
                                     <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
@@ -1631,9 +1673,10 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
             if (voiceHistory.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="6" class="text-center py-10 text-slate-400 font-medium">
-                            <i data-lucide="archive" class="w-8 h-8 mx-auto mb-2 opacity-30"></i>
-                            Belum ada riwayat rekaman voice over di sistem.
+                        <td colspan="6" class="text-center py-12 text-slate-400 font-medium">
+                            <i data-lucide="archive" class="w-10 h-10 mx-auto mb-2 opacity-30 text-slate-400"></i>
+                            <div class="text-xs font-bold">Arsip Audio Masih Kosong</div>
+                            <p class="text-[11px] text-slate-400 mt-1">Buat voice-over di menu "Voice Generator" terlebih dahulu.</p>
                         </td>
                     </tr>
                 `;
@@ -1646,11 +1689,11 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
 
             sortedHistory.forEach(item => {
                 const tr = document.createElement("tr");
-                tr.className = "hover:bg-slate-50/50 transition-all";
+                tr.className = "hover:bg-slate-50/50 transition-all border-b border-slate-100 last:border-0";
                 tr.innerHTML = `
-                    <td class="p-4">
+                    <td class="p-4 text-center">
                         <button onclick="toggleFavorite('${item.id}')" class="text-slate-300 hover:text-rose-500 transition-all">
-                            <i data-lucide="heart" class="w-4 h-4 ${item.favorite ? 'fill-rose-500 text-rose-500' : 'fill-transparent text-slate-300'}"></i>
+                            <i data-lucide="heart" class="w-4 h-4 mx-auto ${item.favorite ? 'fill-rose-500 text-rose-500' : 'fill-transparent text-slate-300'}"></i>
                         </button>
                     </td>
                     <td class="p-4 max-w-xs">
@@ -1658,7 +1701,7 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
                         <div class="text-[10px] text-slate-400 truncate mt-0.5" title="${item.text}">${item.text}</div>
                     </td>
                     <td class="p-4">
-                        <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-semibold">${item.voiceName}</span>
+                        <span class="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-bold border border-slate-200">${item.voiceName}</span>
                     </td>
                     <td class="p-4 space-y-0.5 text-[10px]">
                         <div>Style: <strong class="text-slate-700">${item.style}</strong></div>
@@ -1667,13 +1710,13 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
                     <td class="p-4 text-slate-400 text-[10px]">${item.date}</td>
                     <td class="p-4 text-right">
                         <div class="flex items-center justify-end gap-1.5">
-                            <button onclick="loadHistoryToPlayer('${item.id}')" class="p-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-all" title="Putar">
+                            <button onclick="loadHistoryToPlayer('${item.id}')" class="p-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-all" title="Putar">
                                 <i data-lucide="play" class="w-3.5 h-3.5"></i>
                             </button>
-                            <button onclick="downloadHistoryFile('${item.id}')" class="p-1.5 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg transition-all" title="Unduh WAV">
+                            <button onclick="downloadHistoryFile('${item.id}')" class="p-2 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg transition-all" title="Unduh WAV">
                                 <i data-lucide="download" class="w-3.5 h-3.5"></i>
                             </button>
-                            <button onclick="deleteHistoryItem('${item.id}')" class="p-1.5 hover:bg-rose-50 text-slate-400 hover:text-rose-600 rounded-lg transition-all" title="Hapus">
+                            <button onclick="deleteHistoryItem('${item.id}')" class="p-2 hover:bg-rose-50 text-slate-400 hover:text-rose-600 rounded-lg transition-all" title="Hapus">
                                 <i data-lucide="trash" class="w-3.5 h-3.5"></i>
                             </button>
                         </div>
@@ -2133,7 +2176,6 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
             }
         }
 
-
         // (B) AI TEMPLATE GENERATOR: Dynamic model fallback support (gemini-2.5-flash -> gemini-1.5-flash -> gemini-2.5-flash-preview-09-2025)
         async function generateAIScriptWithGemini() {
             const apiKey = localStorage.getItem("vora_gemini_key") || "";
@@ -2174,7 +2216,7 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
             // Output container clean
             const outputBlocks = document.getElementById("ai-output-blocks");
             outputBlocks.innerHTML = `
-                <div class="text-center py-20 text-slate-400 space-y-3">
+                <div class="text-center py-24 text-slate-400 space-y-3">
                     <i data-lucide="sparkles" class="w-8 h-8 mx-auto animate-pulse text-indigo-500"></i>
                     <p class="text-xs font-bold text-slate-600">Gemini sedang menyusun skrip promosi terbaik...</p>
                 </div>
@@ -2259,7 +2301,7 @@ Sistem akan menginstruksikan model Gemini TTS untuk:
 
                 const parsedScript = JSON.parse(rawJsonText);
 
-                // Render structured cards to preview UI
+                // Render structured cards to preview UI (Premium layout)
                 outputBlocks.innerHTML = `
                     <div class="space-y-4">
                         <div class="p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
