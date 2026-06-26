@@ -1,0 +1,2331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vora - Voice Over AI Laptop & Tech Studio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style id="theme-vars">
+        :root {
+            --primary-rgb: 37, 99, 235; /* Default Blue */
+            --primary-hover-rgb: 29, 78, 216;
+            --accent-rgb: 96, 165, 250;
+        }
+    </style>
+    <style>
+        .custom-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.5);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(156, 163, 175, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- Top Loading Bar -->
+    <div id="loading-bar" class="h-1 bg-gradient-to-r from-blue-500 to-indigo-600 w-0 fixed top-0 left-0 transition-all duration-300 z-50"></div>
+
+    <!-- Alert System -->
+    <div id="toast-container" class="fixed top-5 right-5 z-[60] flex flex-col gap-2 max-w-sm w-full"></div>
+
+    <!-- Main Workspace Container -->
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- SIDEBAR -->
+        <aside class="w-80 bg-white border-r border-slate-200 flex flex-col z-20 shrink-0 custom-glass">
+            <!-- Brand -->
+            <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30" id="brand-logo-bg">
+                        <i data-lucide="mic" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg tracking-tight text-slate-900 leading-none">Vora Studio</h1>
+                        <span class="text-[10px] font-semibold tracking-wider text-slate-400 uppercase">Voice Over AI</span>
+                    </div>
+                </div>
+                <span class="px-2 py-1 bg-green-50 text-green-700 text-[10px] font-bold rounded-full border border-green-200 uppercase tracking-widest">Active</span>
+            </div>
+
+            <!-- API Key Status Panel -->
+            <div class="px-6 py-4 bg-slate-50 border-b border-slate-100">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-semibold text-slate-500">Gemini Engine Status</span>
+                    <span id="api-status-badge" class="flex items-center gap-1 text-[11px] font-medium text-red-500">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Offline
+                    </span>
+                </div>
+                <div class="flex gap-2">
+                    <input type="password" id="api-key-input" placeholder="Masukkan Gemini API Key..." class="flex-1 px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-white">
+                    <button id="save-api-btn" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm transition-all flex items-center justify-center gap-1" title="Simpan API Key">
+                        <i data-lucide="key" class="w-3.5 h-3.5"></i> Simpan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex-1 p-4 space-y-1 overflow-y-auto custom-scrollbar" id="sidebar-nav">
+                <button data-target="dashboard" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all bg-blue-50 text-blue-700">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+                </button>
+                <button data-target="generator" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <i data-lucide="audio-lines" class="w-4 h-4"></i> Voice Generator
+                </button>
+                <button data-target="ai-script" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i> AI Template Generator
+                </button>
+                <button data-target="templates" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <i data-lucide="book-template" class="w-4 h-4"></i> Manual Template
+                </button>
+                <button data-target="history" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <i data-lucide="history" class="w-4 h-4"></i> Riwayat Voice
+                </button>
+                <button data-target="backup" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <i data-lucide="download-cloud" class="w-4 h-4"></i> Download & Backup
+                </button>
+                <button data-target="settings" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <i data-lucide="settings" class="w-4 h-4"></i> Settings & Tema
+                </button>
+            </nav>
+
+            <!-- Bottom Note -->
+            <div class="p-4 border-t border-slate-100 text-center">
+                <span class="text-[10px] font-medium text-slate-400">Vora Engine v1.2.0 • Studio Edition</span>
+            </div>
+        </aside>
+
+        <!-- MAIN WORKSPACE -->
+        <main class="flex-1 flex flex-col overflow-hidden bg-slate-50/50">
+            <!-- Top Header & Theme Indicator -->
+            <header class="h-16 border-b border-slate-200 bg-white flex items-center justify-between px-8 shrink-0">
+                <div class="flex items-center gap-4">
+                    <h2 id="page-title" class="text-lg font-bold text-slate-800">Dashboard Studio</h2>
+                    <span id="current-draft-indicator" class="hidden text-xs bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full items-center gap-1">
+                        <i data-lucide="save" class="w-3 h-3"></i> Draft Tersimpan
+                    </span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <!-- Quick Theme Selector -->
+                    <div class="flex items-center gap-2 border-r border-slate-200 pr-4">
+                        <span class="text-xs font-semibold text-slate-400">Preset Tema:</span>
+                        <select id="quick-theme-select" class="text-xs font-bold border border-slate-200 rounded-lg px-2 py-1 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                    <!-- Quick Character Counter -->
+                    <div class="flex items-center gap-2 text-xs font-medium text-slate-500">
+                        <i data-lucide="keyboard" class="w-4 h-4 text-slate-400"></i>
+                        <span>Hari ini: <strong id="header-char-counter">0</strong> karakter</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Workspace Viewports -->
+            <div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                
+                <!-- 1. DASHBOARD VIEW -->
+                <section id="view-dashboard" class="space-y-6">
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-8 text-white shadow-xl shadow-blue-900/10 relative overflow-hidden" id="dashboard-banner">
+                        <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-white/10 rounded-full blur-2xl"></div>
+                        <div class="absolute -left-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
+                        <div class="relative z-10 max-w-xl">
+                            <span class="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-2.5 py-1 rounded-full border border-white/20">Studio Terintegrasi</span>
+                            <h3 class="text-3xl font-black mt-4 mb-2 tracking-tight">Transformasikan Naskah Laptop Menjadi Audio Menjual</h3>
+                            <p class="text-blue-100 text-sm leading-relaxed">Gunakan teknologi kecerdasan buatan Gemini untuk merancang skrip promosi serta memproduksi voice-over alami berintonasi emosi manusia yang memikat pembeli.</p>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Cards Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center" id="stat-ic-1">
+                                <i data-lucide="volume-2" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 font-semibold block">Total Voice</span>
+                                <span id="stat-total-voice" class="text-xl font-bold text-slate-800">0</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center" id="stat-ic-2">
+                                <i data-lucide="clock" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 font-semibold block">Total Durasi</span>
+                                <span id="stat-total-duration" class="text-xl font-bold text-slate-800">0s</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center" id="stat-ic-3">
+                                <i data-lucide="file-text" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 font-semibold block">Naskah Tersimpan</span>
+                                <span id="stat-total-templates" class="text-xl font-bold text-slate-800">0</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center" id="stat-ic-4">
+                                <i data-lucide="download" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 font-semibold block">Total Download</span>
+                                <span id="stat-total-download" class="text-xl font-bold text-slate-800">0</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center" id="stat-ic-5">
+                                <i data-lucide="align-justify" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 font-semibold block">Karakter Diproses</span>
+                                <span id="stat-total-chars" class="text-xl font-bold text-slate-800">0</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-pink-50 text-pink-600 flex items-center justify-center" id="stat-ic-6">
+                                <i data-lucide="star" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 font-semibold block">Favorit</span>
+                                <span id="stat-favorite-count" class="text-xl font-bold text-slate-800">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Voice Gen & Promo Suggestions -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Dashboard Quick Info -->
+                        <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                            <h4 class="font-bold text-slate-800 text-base">Panduan Studio Voice Over Laptop & Gadget</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">1</div>
+                                    <div class="text-xs">
+                                        <h5 class="font-bold text-slate-800 mb-1">Set Gemini API Key</h5>
+                                        <p class="text-slate-500 leading-relaxed">Masukkan API Key Anda di panel sidebar kiri untuk mengaktifkan AI generator naskah & suara.</p>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">2</div>
+                                    <div class="text-xs">
+                                        <h5 class="font-bold text-slate-800 mb-1">Pilih Model Pengisi Suara</h5>
+                                        <p class="text-slate-500 leading-relaxed">Gunakan 5 opsi pengisi suara pria dan 5 wanita yang telah dirancang khusus berlogat natural.</p>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">3</div>
+                                    <div class="text-xs">
+                                        <h5 class="font-bold text-slate-800 mb-1">Sesuaikan Karakter & Kecepatan</h5>
+                                        <p class="text-slate-500 leading-relaxed">Atur speed, pitch, dan tone bicara agar pas dengan durasi video visual iklan Anda.</p>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">4</div>
+                                    <div class="text-xs">
+                                        <h5 class="font-bold text-slate-800 mb-1">Ekspor Dan Pasang Ke Video</h5>
+                                        <p class="text-slate-500 leading-relaxed">Download file WAV hasil konversi AI, gabungkan ke naskah CapCut atau Premiere Anda.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shortcut Quick Info Cards -->
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-base mb-2">Shortcut Cepat</h4>
+                                <p class="text-xs text-slate-500 leading-relaxed mb-4">Navigasi instan ke fitur unggulan untuk memangkas waktu pengerjaan proyek konten komersial Anda.</p>
+                            </div>
+                            <div class="space-y-2">
+                                <button onclick="switchView('generator')" class="w-full py-2.5 px-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 flex items-center justify-between transition-all">
+                                    <span>Tulis & Buat Suara Baru</span>
+                                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="switchView('ai-script')" class="w-full py-2.5 px-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 flex items-center justify-between transition-all">
+                                    <span>Bikin Naskah Iklan dengan AI</span>
+                                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="switchView('templates')" class="w-full py-2.5 px-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 flex items-center justify-between transition-all">
+                                    <span>Kelola Template Manual</span>
+                                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. VOICE GENERATOR VIEW -->
+                <section id="view-generator" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left Column: Input Form -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                                    <i data-lucide="text-quote" class="w-5 h-5 text-blue-600" id="icon-text-quote"></i> Naskah Studio
+                                </h3>
+                                <div class="flex items-center gap-2">
+                                    <button id="import-txt-btn" class="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 text-xs font-bold rounded-lg flex items-center gap-1.5 transition-all">
+                                        <i data-lucide="file-up" class="w-3.5 h-3.5"></i> Import (.txt)
+                                    </button>
+                                    <input type="file" id="txt-file-input" accept=".txt" class="hidden">
+                                    <button id="clear-draft-btn" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 text-xs font-bold rounded-lg flex items-center gap-1.5 transition-all">
+                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Reset
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Big Input Text Area with Drag Drop -->
+                            <div class="relative group" id="drop-zone">
+                                <textarea id="text-input" placeholder="Tuliskan naskah iklan laptop atau aksesoris di sini... Drag & drop file teks (.txt) juga bisa langsung di sini!" class="w-full h-80 px-4 py-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-slate-50/50 focus:bg-white transition-all text-sm leading-relaxed custom-scrollbar resize-none"></textarea>
+                                <div class="absolute bottom-4 right-4 flex items-center gap-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-medium text-slate-500">
+                                    <span id="char-counter">0 / 2000 Karakter</span>
+                                    <span class="text-slate-300">|</span>
+                                    <span id="est-duration">Estimasi: 0s</span>
+                                </div>
+                            </div>
+
+                            <!-- Options Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-2">Model Suara (Voice)</label>
+                                    <select id="voice-select" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                                        <optgroup label="Suara Laki-laki (Indonesian Male style)">
+                                            <option value="Zephyr:Male1">Male 1 (Profesional) - Zephyr</option>
+                                            <option value="Puck:Male2">Male 2 (Muda) - Puck</option>
+                                            <option value="Fenrir:Male3">Male 3 (Berwibawa) - Fenrir</option>
+                                            <option value="Orus:Male4">Male 4 (Santai) - Orus</option>
+                                            <option value="Enceladus:Male5">Male 5 (Semangat) - Enceladus</option>
+                                        </optgroup>
+                                        <optgroup label="Suara Perempuan (Indonesian Female style)">
+                                            <option value="Leda:Female1">Female 1 (Lembut) - Leda</option>
+                                            <option value="Kore:Female2">Female 2 (Profesional) - Kore</option>
+                                            <option value="Aoede:Female3">Female 3 (Muda) - Aoede</option>
+                                            <option value="Callirrhoe:Female4" selected>Female 4 (Ceria) - Callirrhoe</option>
+                                            <option value="Autonoe:Female5">Female 5 (Elegan) - Autonoe</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-2">Gaya & Intonasi Bicara (Style)</label>
+                                    <select id="style-select" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                                        <option value="Iklan Profesional">Iklan Profesional</option>
+                                        <option value="Promo Diskon">Promo Diskon</option>
+                                        <option value="Sales Marketing">Sales Marketing</option>
+                                        <option value="Narator">Narator</option>
+                                        <option value="Edukatif">Edukatif</option>
+                                        <option value="Review Produk">Review Produk</option>
+                                        <option value="Teknologi" selected>Teknologi</option>
+                                        <option value="Friendly">Friendly</option>
+                                        <option value="Formal">Formal</option>
+                                        <option value="Casual">Casual</option>
+                                        <option value="Energik">Energik</option>
+                                        <option value="Bersemangat">Bersemangat</option>
+                                        <option value="Elegan">Elegan</option>
+                                        <option value="Premium">Premium</option>
+                                        <option value="Cepat">Cepat</option>
+                                        <option value="Santai">Santai</option>
+                                        <option value="YouTube">YouTube</option>
+                                        <option value="TikTok">TikTok</option>
+                                        <option value="Live Shopping">Live Shopping</option>
+                                        <option value="Presentasi">Presentasi</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Custom Speech Modulation Panels (Sliders) -->
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                            <h4 class="font-bold text-slate-800 text-sm">Modulasi Kecepatan & Nada</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Speed -->
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-semibold text-slate-500">Kecepatan (Speed)</span>
+                                        <span id="val-speed" class="text-xs font-bold text-blue-600">Normal (1.0x)</span>
+                                    </div>
+                                    <input type="range" id="slide-speed" min="0.5" max="2.0" step="0.1" value="1.0" class="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                                <!-- Pitch -->
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-semibold text-slate-500">Intonasi & Tinggi Nada (Pitch)</span>
+                                        <span id="val-pitch" class="text-xs font-bold text-blue-600">Sedang (1.0)</span>
+                                    </div>
+                                    <input type="range" id="slide-pitch" min="0.5" max="1.5" step="0.1" value="1.0" class="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                                <!-- Volume -->
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-semibold text-slate-500">Kekuatan Suara (Volume)</span>
+                                        <span id="val-volume" class="text-xs font-bold text-blue-600">Maksimum (100%)</span>
+                                    </div>
+                                    <input type="range" id="slide-volume" min="0" max="100" value="100" class="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                                <!-- Emphasis Level -->
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-semibold text-slate-500">Penekanan Kata (Emphasis)</span>
+                                        <span id="val-emphasis" class="text-xs font-bold text-blue-600">Sedang (Medium)</span>
+                                    </div>
+                                    <input type="range" id="slide-emphasis" min="0" max="2" value="1" class="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <div class="flex justify-end gap-3">
+                            <button id="save-template-quick" class="px-5 py-3 border border-slate-200 hover:border-slate-300 text-slate-700 font-bold text-sm rounded-xl bg-white shadow-sm transition-all flex items-center gap-2">
+                                <i data-lucide="bookmark-plus" class="w-4 h-4"></i> Simpan ke Template
+                            </button>
+                            <button id="generate-voice-btn" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-500/20 transition-all flex items-center gap-2">
+                                <i data-lucide="zap" class="w-4 h-4"></i> Proses Voice Over
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Live Audio Player & Real-time Visualizer -->
+                    <div class="space-y-6">
+                        <!-- Modern Audio Player Panel -->
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-base mb-4 flex items-center gap-2">
+                                    <i data-lucide="music" class="w-5 h-5 text-blue-600" id="icon-player-title"></i> Live Player Studio
+                                </h3>
+                                <div class="bg-slate-50/80 rounded-xl p-4 border border-slate-100 space-y-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-blue-500 text-white flex items-center justify-center font-bold text-xs" id="player-avatar-bg">
+                                            VO
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <span id="player-track-name" class="font-bold text-xs text-slate-800 block truncate">Belum ada file audio yang aktif</span>
+                                            <span id="player-track-meta" class="text-[10px] text-slate-400 font-medium block">Pilih hasil voice over dari riwayat di bawah atau buat baru</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Waveform visualizer -->
+                                    <div class="h-16 flex items-center justify-between gap-1 px-2" id="waveform-bars">
+                                        <!-- Simulated waveform bars -->
+                                        <div class="w-1 bg-slate-200 rounded h-4 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-8 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-6 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-10 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-12 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-8 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-5 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-10 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-14 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-9 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-4 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-7 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-11 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-5 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-3 transition-all duration-150"></div>
+                                        <div class="w-1 bg-slate-200 rounded h-8 transition-all duration-150"></div>
+                                    </div>
+
+                                    <!-- Controls -->
+                                    <div class="space-y-2">
+                                        <!-- Seekbar -->
+                                        <div class="flex items-center gap-2">
+                                            <span id="player-time-current" class="text-[10px] font-bold text-slate-500">00:00</span>
+                                            <div class="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden relative cursor-pointer" id="progress-container">
+                                                <div id="player-progress-bar" class="h-full bg-blue-600 w-0 transition-all"></div>
+                                            </div>
+                                            <span id="player-time-total" class="text-[10px] font-bold text-slate-500">00:00</span>
+                                        </div>
+
+                                        <!-- Command Buttons -->
+                                        <div class="flex items-center justify-between pt-2">
+                                            <div class="flex items-center gap-1">
+                                                <button id="player-play-btn" class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-md shadow-blue-500/20 transition-all disabled:opacity-50" disabled>
+                                                    <i data-lucide="play" class="w-5 h-5 ml-0.5"></i>
+                                                </button>
+                                                <button id="player-stop-btn" class="w-8 h-8 rounded-full hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all disabled:opacity-50" disabled>
+                                                    <i data-lucide="square" class="w-4 h-4"></i>
+                                                </button>
+                                            </div>
+                                            <div class="flex items-center gap-3">
+                                                <div class="flex items-center gap-1.5">
+                                                    <i data-lucide="volume-2" class="w-4 h-4 text-slate-400"></i>
+                                                    <input type="range" id="player-vol-slider" min="0" max="1" step="0.1" value="1" class="w-16 h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                                                </div>
+                                                <select id="player-speed-select" class="text-[11px] font-bold border border-slate-200 rounded bg-white p-1 focus:outline-none">
+                                                    <option value="0.75">0.75x</option>
+                                                    <option value="1.0" selected>1.0x</option>
+                                                    <option value="1.25">1.25x</option>
+                                                    <option value="1.5">1.5x</option>
+                                                    <option value="2.0">2.0x</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fast Action Download/Share -->
+                            <div class="border-t border-slate-100 pt-4 flex justify-between gap-2">
+                                <button id="player-download-btn" class="flex-1 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50" disabled>
+                                    <i data-lucide="download" class="w-4 h-4"></i> Download File WAV
+                                </button>
+                                <button id="player-fav-btn" class="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-400 hover:text-rose-500 rounded-xl transition-all disabled:opacity-50" disabled>
+                                    <i data-lucide="heart" class="w-4 h-4 fill-transparent"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- System Log & Console Panel -->
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-800 text-sm mb-3">Papan Informasi Live System</h4>
+                            <div class="bg-slate-900 text-slate-300 font-mono text-[10px] p-4 rounded-xl space-y-1 h-36 overflow-y-auto custom-scrollbar" id="system-log-screen">
+                                <div class="text-green-400">[SYSTEM] Studio Voice Over AI diaktifkan.</div>
+                                <div class="text-blue-400">[INFO] Database Local-In-Memory & IndexedDB siap digunakan.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. AI TEMPLATE GENERATOR VIEW -->
+                <section id="view-ai-script" class="hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-slate-800 text-base mb-1 flex items-center gap-2">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-blue-600" id="icon-ai-script"></i> Pembuat Naskah Promo dengan Gemini AI
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-6">Secara cerdas merancang naskah penjualan berdasarkan rincian spesifikasi produk laptop & aksesoris Anda.</p>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <!-- Column Form -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1.5">Jenis Produk</label>
+                                    <select id="ai-product-type" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                        <option value="Laptop Gaming">Laptop Gaming</option>
+                                        <option value="Laptop Kantor">Laptop Kantor</option>
+                                        <option value="Laptop Murah">Laptop Murah</option>
+                                        <option value="Laptop Premium" selected>Laptop Premium</option>
+                                        <option value="Laptop Second">Laptop Second</option>
+                                        <option value="Komputer Rakitan">Komputer Rakitan</option>
+                                        <option value="Mini PC">Mini PC</option>
+                                        <option value="Monitor">Monitor</option>
+                                        <option value="Printer">Printer</option>
+                                        <option value="SSD">SSD</option>
+                                        <option value="RAM">RAM</option>
+                                        <option value="Mouse">Mouse</option>
+                                        <option value="Keyboard">Keyboard</option>
+                                        <option value="Aksesoris">Aksesoris</option>
+                                    </select>
+                                </div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 mb-1.5">Nama Produk</label>
+                                        <input type="text" id="ai-prod-name" value="ZenBook Duo" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 mb-1.5">Merek</label>
+                                        <input type="text" id="ai-prod-brand" value="ASUS" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 mb-1.5">Prosesor</label>
+                                        <input type="text" id="ai-prod-cpu" value="Intel Core Ultra 9" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 mb-1.5">Kapasitas RAM</label>
+                                        <input type="text" id="ai-prod-ram" value="32GB LPDDR5X" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 mb-1.5">Penyimpanan SSD</label>
+                                        <input type="text" id="ai-prod-ssd" value="2TB PCIe Gen4" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 mb-1.5">Kartu Grafis (VGA)</label>
+                                        <input type="text" id="ai-prod-vga" value="Intel Arc Graphics" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 mb-1.5">Harga Promo</label>
+                                        <input type="text" id="ai-prod-price" value="Rp 31.999.000" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-500 mb-1.5">Kondisi</label>
+                                        <select id="ai-prod-condition" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                            <option value="Baru, Garansi Resmi 2 Tahun" selected>Baru, Garansi Resmi</option>
+                                            <option value="Bekas Berkualitas, Mulus 98%">Bekas Mulus (Second)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1.5">Bonus & Nilai Tambah</label>
+                                    <input type="text" id="ai-prod-bonus" value="Sleeve Case Eksklusif, ASUS Stylus Pen, Office Home & Student Seumur Hidup" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1.5">Target Konsumen Utama</label>
+                                    <input type="text" id="ai-prod-target" value="Kreator konten profesional, eksekutif bisnis, programmer tingkat lanjut" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                                </div>
+                                <button id="ai-generate-script-btn" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-indigo-500/20 transition-all flex items-center justify-center gap-2">
+                                    <i data-lucide="wand2" class="w-4 h-4"></i> Racik Naskah Otomatis
+                                </button>
+                            </div>
+
+                            <!-- Generated Output Panel -->
+                            <div class="lg:col-span-2 bg-slate-50 rounded-2xl p-6 border border-slate-200 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                                        <span class="text-xs font-bold text-slate-600">Draft Hasil Gemini AI</span>
+                                        <button id="ai-copy-script" class="px-2.5 py-1.5 bg-white border border-slate-200 text-slate-600 text-[11px] font-bold rounded-lg flex items-center gap-1 hover:bg-slate-50 transition-all" disabled>
+                                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> Salin Naskah
+                                        </button>
+                                    </div>
+
+                                    <!-- Output Blocks -->
+                                    <div class="space-y-4 overflow-y-auto max-h-[420px] pr-2 custom-scrollbar" id="ai-output-blocks">
+                                        <div class="text-center py-20 text-slate-400 space-y-2">
+                                            <i data-lucide="text" class="w-10 h-10 mx-auto opacity-30"></i>
+                                            <p class="text-xs font-medium">Isi parameter produk di sebelah kiri dan klik tombol di bawah untuk menghasilkan draf promosi naskah terstruktur!</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-slate-200 pt-4 flex gap-3">
+                                    <button id="ai-apply-script" class="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2" disabled>
+                                        <i data-lucide="arrow-right-left" class="w-4 h-4"></i> Gunakan di Voice Generator
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. MANUAL TEMPLATE VIEW -->
+                <section id="view-templates" class="hidden space-y-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base">Manajemen Template Naskah Manual</h3>
+                            <p class="text-xs text-slate-400">Atur pustaka naskah kustom Anda agar bisa diakses berulang kali dengan cepat.</p>
+                        </div>
+                        <button onclick="openTemplateModal()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all flex items-center gap-2">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Tambah Baru
+                        </button>
+                    </div>
+
+                    <!-- Filter Categorization -->
+                    <div class="flex flex-wrap gap-2" id="template-categories-filter">
+                        <button class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white" onclick="filterTemplates('Semua')">Semua</button>
+                        <button class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-white text-slate-600 hover:bg-slate-50 border border-slate-200" onclick="filterTemplates('Laptop')">Laptop</button>
+                        <button class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-white text-slate-600 hover:bg-slate-50 border border-slate-200" onclick="filterTemplates('PC Rakitan')">PC & Komputer</button>
+                        <button class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-white text-slate-600 hover:bg-slate-50 border border-slate-200" onclick="filterTemplates('Aksesoris')">Aksesoris</button>
+                    </div>
+
+                    <!-- Template Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="templates-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- 5. HISTORY VIEW -->
+                <section id="view-history" class="hidden space-y-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base">Riwayat Produksi Voice Over</h3>
+                            <p class="text-xs text-slate-400">Arsip otomatis seluruh audio voice-over yang telah diproses di dalam studio.</p>
+                        </div>
+                        <button id="clear-all-history" class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold rounded-xl transition-all flex items-center gap-2">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i> Bersihkan Semua Riwayat
+                        </button>
+                    </div>
+
+                    <!-- Desktop Tables for High Density -->
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto custom-scrollbar">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="bg-slate-50/80 border-b border-slate-200">
+                                    <tr>
+                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Favorit</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nama & Detail File</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Format Model</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Konfigurasi</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tanggal</th>
+                                        <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-table-body" class="divide-y divide-slate-100 text-xs">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. BACKUP & RESTORE VIEW -->
+                <section id="view-backup" class="hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-slate-800 text-base mb-1">Manajemen & Backup Data Eksternal</h3>
+                        <p class="text-xs text-slate-400 mb-6">Backup, pulihkan, dan amankan seluruh konfigurasi riwayat audio, template naskah, dan pengaturan studio.</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">Ekspor Data & Backup</h4>
+                                <p class="text-xs text-slate-500 leading-relaxed">Ekspor seluruh riwayat database teks, durasi, status favorit, dan preferensi pengaturan ke dalam berkas standar.</p>
+                                <div class="flex flex-col gap-2">
+                                    <button onclick="exportHistory('json')" class="py-2.5 px-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-between transition-all">
+                                        <span class="flex items-center gap-2"><i data-lucide="file-json" class="w-4 h-4 text-amber-500"></i> Ekspor Riwayat (JSON)</span>
+                                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                    </button>
+                                    <button onclick="exportHistory('csv')" class="py-2.5 px-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-between transition-all">
+                                        <span class="flex items-center gap-2"><i data-lucide="sheet" class="w-4 h-4 text-emerald-500"></i> Ekspor CSV Riwayat</span>
+                                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">Pulihkan Data (Restore)</h4>
+                                <p class="text-xs text-slate-500 leading-relaxed">Masukkan berkas JSON hasil ekspor cadangan Vora Studio Anda untuk memulihkan seluruh draf atau data lama.</p>
+                                
+                                <div class="border-2 border-dashed border-slate-200 rounded-xl p-6 text-center space-y-3 cursor-pointer hover:border-blue-500/50 transition-all" onclick="document.getElementById('import-restore-file').click()">
+                                    <i data-lucide="upload-cloud" class="w-8 h-8 mx-auto text-slate-400"></i>
+                                    <span class="text-xs font-bold text-slate-600 block">Klik di sini untuk upload backup</span>
+                                    <span class="text-[10px] text-slate-400 block">Format yang didukung: .json</span>
+                                    <input type="file" id="import-restore-file" accept=".json" class="hidden">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. SETTINGS VIEW -->
+                <section id="view-settings" class="hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-slate-800 text-base mb-1">Pengaturan Tambahan & Kustomisasi Studio</h3>
+                        <p class="text-xs text-slate-400 mb-6">Sesuaikan performa generator suara, keamanan sistem, dan visual antarmuka pengguna.</p>
+
+                        <!-- Theme Picker Area -->
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">Pilih Gaya Warna Studio (20 Pilihan Tema)</h4>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3" id="theme-grid">
+                                <!-- Generated Dynamically by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Gemini Advanced Prompt Guideline (Read-Only Preview) -->
+                        <div class="border-t border-slate-200 mt-8 pt-8 space-y-4">
+                            <h4 class="font-bold text-slate-700 text-xs uppercase tracking-wider">Sistem Prompt Rekayasa Intonasi (Gemini Guardrails)</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">Vora secara otomatis menyisipkan filter linguistik cerdas untuk menekan nada robotik, memastikan pelafalan singkatan seperti (Intel, SSD, VGA, RAM) diucapkan alami dalam format ejaan komersial Indonesia asli.</p>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 font-mono text-[11px] text-slate-500 whitespace-pre-wrap leading-relaxed">
+Sistem akan menginstruksikan model Gemini TTS untuk:
+- Menerjemahkan emosi gaya bicara ke dalam nada dinamis.
+- Menghentikan suara pada spasi atau tanda baca secara alami.
+- Melafalkan istilah spesifikasi laptop dengan logat tech reviewer handal Indonesia.
+- Menyusun gelombang frekuensi yang ramah dan meyakinkan di telinga calon pembeli.</div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MANUAL TEMPLATE MODAL -->
+    <div id="template-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 transform scale-95 transition-all duration-300" id="template-modal-card">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                <h4 class="font-bold text-slate-800 text-base" id="modal-title">Tambah Template Naskah</h4>
+                <button onclick="closeTemplateModal()" class="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center transition-all">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <input type="hidden" id="modal-template-id">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-1.5">Judul Template</label>
+                    <input type="text" id="modal-template-title" placeholder="Misal: Promo ASUS TUF Gaming" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-1.5">Kategori</label>
+                    <select id="modal-template-category" class="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-white focus:outline-none">
+                        <option value="Laptop">Laptop</option>
+                        <option value="PC Rakitan">PC & Komputer</option>
+                        <option value="Aksesoris">Aksesoris</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-1.5">Isi Naskah</label>
+                    <textarea id="modal-template-text" placeholder="Tuliskan naskah lengkap..." class="w-full h-40 px-3 py-2 text-xs font-medium rounded-xl border border-slate-200 focus:outline-none resize-none custom-scrollbar"></textarea>
+                </div>
+            </div>
+            <div class="flex items-center justify-end gap-2 border-t border-slate-100 pt-4 mt-6">
+                <button onclick="closeTemplateModal()" class="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-bold rounded-xl transition-all">Batal</button>
+                <button onclick="saveManualTemplate()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-lg transition-all">Simpan Naskah</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM CONFIRM MODAL -->
+    <div id="confirm-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 transform scale-95 transition-all duration-300" id="confirm-modal-card">
+            <div class="flex flex-col items-center text-center space-y-4">
+                <div class="w-12 h-12 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center">
+                    <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-800 text-base" id="confirm-modal-title">Konfirmasi Tindakan</h4>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed" id="confirm-modal-desc">Apakah Anda yakin ingin melanjutkan tindakan ini?</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-end gap-2 border-t border-slate-100 pt-4 mt-6">
+                <button id="confirm-cancel-btn" class="flex-1 py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-bold rounded-xl transition-all">Batal</button>
+                <button id="confirm-ok-btn" class="flex-1 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl shadow-lg transition-all">Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN JAVASCRIPT SYSTEM -->
+    <script>
+        // Theme Definitions (20 Presets)
+        const themes = [
+            { id: 'blue', name: 'Standard Blue', rgb: '37, 99, 235', hoverRgb: '29, 78, 216', accentRgb: '96, 165, 250' },
+            { id: 'cyan', name: 'Cyber Cyan', rgb: '6, 182, 212', hoverRgb: '8, 145, 178', accentRgb: '103, 232, 249' },
+            { id: 'indigo', name: 'Indi-Glow', rgb: '79, 70, 229', hoverRgb: '67, 56, 202', accentRgb: '129, 140, 248' },
+            { id: 'purple', name: 'Deep Purple', rgb: '147, 51, 234', hoverRgb: '126, 34, 206', accentRgb: '192, 132, 252' },
+            { id: 'violet', name: 'Electric Violet', rgb: '139, 92, 246', hoverRgb: '124, 58, 237', accentRgb: '167, 139, 250' },
+            { id: 'green', name: 'Nature Green', rgb: '34, 197, 94', hoverRgb: '22, 163, 74', accentRgb: '134, 239, 172' },
+            { id: 'emerald', name: 'Emerald Peak', rgb: '16, 185, 129', hoverRgb: '5, 150, 105', accentRgb: '110, 231, 183' },
+            { id: 'lime', name: 'Neon Lime', rgb: '132, 204, 22', hoverRgb: '101, 163, 13', accentRgb: '190, 242, 142' },
+            { id: 'orange', name: 'Sunset Orange', rgb: '249, 115, 22', hoverRgb: '234, 88, 12', accentRgb: '253, 186, 116' },
+            { id: 'amber', name: 'Bold Amber', rgb: '245, 158, 11', hoverRgb: '217, 119, 6', accentRgb: '253, 230, 138' },
+            { id: 'red', name: 'Vibrant Red', rgb: '239, 68, 68', hoverRgb: '220, 38, 38', accentRgb: '252, 165, 165' },
+            { id: 'rose', name: 'Rose Redux', rgb: '244, 63, 94', hoverRgb: '225, 29, 72', accentRgb: '251, 113, 133' },
+            { id: 'pink', name: 'Pop Pink', rgb: '236, 72, 153', hoverRgb: '219, 39, 119', accentRgb: '247, 164, 204' },
+            { id: 'brown', name: 'Rustic Brown', rgb: '120, 53, 4', hoverRgb: '69, 26, 3', accentRgb: '180, 83, 9' },
+            { id: 'gray', name: 'Sleek Gray', rgb: '107, 114, 128', hoverRgb: '75, 85, 99', accentRgb: '156, 163, 175' },
+            { id: 'darkblue', name: 'Deep Sea Blue', rgb: '29, 78, 216', hoverRgb: '30, 64, 175', accentRgb: '96, 165, 250' },
+            { id: 'aqua', name: 'Aqua Clean', rgb: '20, 184, 166', hoverRgb: '13, 148, 136', accentRgb: '94, 234, 212' },
+            { id: 'teal', name: 'Classic Teal', rgb: '15, 118, 110', hoverRgb: '17, 94, 89', accentRgb: '45, 212, 191' },
+            { id: 'gold', name: 'Premium Gold', rgb: '197, 160, 89', hoverRgb: '158, 119, 58', accentRgb: '228, 203, 150' },
+            { id: 'midnight', name: 'Midnight Dark', rgb: '15, 23, 42', hoverRgb: '30, 41, 59', accentRgb: '100, 116, 139' }
+        ];
+
+        // IndexedDB Configuration for Storing Audio Blobs (Robust & Unlimited Storage compared to LocalStorage)
+        const DB_NAME = "VoraAudioStudioDB_2026";
+        const STORE_NAME = "audios";
+        let dbInstance = null;
+
+        function initIndexedDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, 1);
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: "id" });
+                    }
+                };
+                request.onsuccess = (e) => {
+                    dbInstance = e.target.result;
+                    resolve(dbInstance);
+                };
+                request.onerror = (e) => {
+                    console.error("IndexedDB load error:", e);
+                    reject(e);
+                };
+            });
+        }
+
+        function saveAudioBlobToDB(id, blob) {
+            return new Promise((resolve, reject) => {
+                if (!dbInstance) return resolve(null);
+                const transaction = dbInstance.transaction([STORE_NAME], "readwrite");
+                const store = transaction.objectStore(STORE_NAME);
+                store.put({ id, data: blob });
+                transaction.oncomplete = () => resolve(true);
+                transaction.onerror = (e) => reject(e);
+            });
+        }
+
+        function getAudioBlobFromDB(id) {
+            return new Promise((resolve, reject) => {
+                if (!dbInstance) return resolve(null);
+                const transaction = dbInstance.transaction([STORE_NAME], "readonly");
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.get(id);
+                request.onsuccess = (e) => {
+                    resolve(e.target.result ? e.target.result.data : null);
+                };
+                request.onerror = (e) => reject(e);
+            });
+        }
+
+        function deleteAudioBlobFromDB(id) {
+            return new Promise((resolve, reject) => {
+                if (!dbInstance) return resolve(null);
+                const transaction = dbInstance.transaction([STORE_NAME], "readwrite");
+                const store = transaction.objectStore(STORE_NAME);
+                store.delete(id);
+                transaction.oncomplete = () => resolve(true);
+                transaction.onerror = (e) => reject(e);
+            });
+        }
+
+        function clearAudioDB() {
+            return new Promise((resolve) => {
+                if (!dbInstance) return resolve();
+                const transaction = dbInstance.transaction([STORE_NAME], "readwrite");
+                const store = transaction.objectStore(STORE_NAME);
+                store.clear();
+                transaction.oncomplete = () => resolve();
+            });
+        }
+
+        // Global Application State Variables
+        let activeThemeId = "blue";
+        let manualTemplates = [];
+        let voiceHistory = [];
+        let systemStats = {
+            totalVoice: 0,
+            totalDuration: 0,
+            totalTemplates: 0,
+            totalDownload: 0,
+            totalChars: 0,
+            favoriteCount: 0
+        };
+
+        let currentActiveAudio = null; // Holds the Audio object for playbacks
+        let currentPlayingId = null;   // ID of currently playing history/live audio
+        let currentAudioBlob = null;   // Active audio WAV blob
+        let audioProgressTimer = null; // Timer interval for timeline syncing
+        let textBackupInterval = null; // Auto save draft timer
+
+        // Standard Default Manual Templates
+        const defaultTemplates = [
+            { id: "tpl-1", title: "Promo Laptop Gaming ASUS ROG", category: "Laptop", text: "Siap mendominasi medan tempur digital? Rasakan kekuatan murni dari lini ASUS ROG Zephyrus terbaru! Diperkuat prosesor kencang dan layar premium 240Hz, setiap taktik Anda tereksekusi tanpa kompromi. Dapatkan cashback instan selama masa pre-order!" },
+            { id: "tpl-2", title: "Review Singkat SSD NVMe Ultra", category: "Aksesoris", text: "Masih betah nunggu loading game lemot? Saatnya beralih ke SSD NVMe generasi terbaru dengan kecepatan baca super ngebut! Proses transfer data sekejap, boot up sistem cuma butuh waktu hitungan detik. Upgrade hardware-mu sekarang juga!" },
+            { id: "tpl-3", title: "Iklan Mini PC Hemat Daya", category: "PC Rakitan", text: "Performa komputer desktop super tangguh kini hadir dalam desain ramping sekecil genggaman tangan Anda! Mini PC hemat daya ini sangat cocok untuk urusan produktivitas kerja harian tanpa bikin tagihan listrik Anda membengkak!" }
+        ];
+
+        // Custom Confirm Modal Handler
+        function showCustomConfirm(title, description, onConfirm) {
+            const modal = document.getElementById("confirm-modal");
+            const card = document.getElementById("confirm-modal-card");
+            
+            document.getElementById("confirm-modal-title").textContent = title;
+            document.getElementById("confirm-modal-desc").textContent = description;
+            
+            modal.classList.remove("opacity-0", "pointer-events-none");
+            card.classList.remove("scale-95");
+            card.classList.add("scale-100");
+            
+            const okBtn = document.getElementById("confirm-ok-btn");
+            const cancelBtn = document.getElementById("confirm-cancel-btn");
+            
+            // Rebind clone node to clear previous event listeners
+            const newOkBtn = okBtn.cloneNode(true);
+            const newCancelBtn = cancelBtn.cloneNode(true);
+            okBtn.parentNode.replaceChild(newOkBtn, okBtn);
+            cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+            
+            newOkBtn.addEventListener("click", () => {
+                onConfirm();
+                closeCustomConfirm();
+            });
+            
+            newCancelBtn.addEventListener("click", () => {
+                closeCustomConfirm();
+            });
+        }
+
+        function closeCustomConfirm() {
+            const modal = document.getElementById("confirm-modal");
+            const card = document.getElementById("confirm-modal-card");
+            
+            modal.classList.add("opacity-0", "pointer-events-none");
+            card.classList.remove("scale-100");
+            card.classList.add("scale-95");
+        }
+
+        // Core App Lifecycle Setup
+        window.addEventListener("DOMContentLoaded", async () => {
+            lucide.createIcons();
+            await initIndexedDB();
+            loadStateFromStorage();
+            renderThemes();
+            renderManualTemplates();
+            renderHistoryTable();
+            updateDashboardStats();
+            setupEventListeners();
+            initAutoDraft();
+            verifyAPIKeyOnLoad();
+            logSystem("Sistem studio berhasil dimuat. Siap memproduksi naskah komersial.");
+        });
+
+        // Initialize Auto Draft Saving System
+        function initAutoDraft() {
+            const inputField = document.getElementById("text-input");
+            const draftIndicator = document.getElementById("current-draft-indicator");
+            
+            // Restore draft if exists
+            const savedDraft = localStorage.getItem("vora_draft");
+            if (savedDraft) {
+                inputField.value = savedDraft;
+                updateCharAndDuration();
+                draftIndicator.classList.remove("hidden");
+                draftIndicator.classList.add("flex");
+            }
+
+            // Listen for input to save & update
+            inputField.addEventListener("input", () => {
+                const text = inputField.value;
+                updateCharAndDuration();
+                if (text.trim() !== "") {
+                    localStorage.setItem("vora_draft", text);
+                    draftIndicator.classList.remove("hidden");
+                    draftIndicator.classList.add("flex");
+                } else {
+                    localStorage.removeItem("vora_draft");
+                    draftIndicator.classList.add("hidden");
+                }
+            });
+        }
+
+        // Character Counting & Duration Estimation Rules
+        function updateCharAndDuration() {
+            const text = document.getElementById("text-input").value;
+            const length = text.length;
+            document.getElementById("char-counter").textContent = `${length} / 2000 Karakter`;
+            
+            // Estimasi: Rata-rata pelafalan normal Bahasa Indonesia adalah ~140 kata per menit (sekitar 2.3 kata per detik / 12 karakter per detik)
+            const estSeconds = Math.ceil(length / 12);
+            document.getElementById("est-duration").textContent = `Estimasi: ${length > 0 ? estSeconds : 0}s`;
+        }
+
+        // Load & Verify State
+        function loadStateFromStorage() {
+            // Theme setup
+            activeThemeId = localStorage.getItem("vora_theme") || "blue";
+            applyTheme(activeThemeId);
+
+            // API key restore
+            const savedAPI = localStorage.getItem("vora_gemini_key") || "";
+            document.getElementById("api-key-input").value = savedAPI;
+
+            // Load templates
+            const savedTemplates = localStorage.getItem("vora_templates");
+            if (savedTemplates) {
+                manualTemplates = JSON.parse(savedTemplates);
+            } else {
+                manualTemplates = [...defaultTemplates];
+                localStorage.setItem("vora_templates", JSON.stringify(manualTemplates));
+            }
+
+            // Load History Metadata
+            const savedHistory = localStorage.getItem("vora_history");
+            if (savedHistory) {
+                voiceHistory = JSON.parse(savedHistory);
+            }
+        }
+
+        // Toast Alert System
+        function showToast(message, type = "success") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = `p-4 rounded-xl shadow-lg border text-xs font-semibold flex items-center justify-between transition-all duration-300 transform translate-x-12 opacity-0 custom-glass`;
+            
+            let icon = "info";
+            let colorClasses = "bg-white text-slate-800 border-slate-200";
+            if (type === "success") {
+                icon = "check-circle";
+                colorClasses = "bg-green-50 text-green-800 border-green-200";
+            } else if (type === "error") {
+                icon = "alert-triangle";
+                colorClasses = "bg-rose-50 text-rose-800 border-rose-200";
+            } else if (type === "info") {
+                icon = "info";
+                colorClasses = "bg-blue-50 text-blue-800 border-blue-200";
+            }
+
+            toast.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i data-lucide="${icon}" class="w-4 h-4"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="ml-4 text-slate-400 hover:text-slate-600 focus:outline-none" onclick="this.parentElement.remove()">
+                    <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                </button>
+            `;
+            
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            // Animate In
+            setTimeout(() => {
+                toast.classList.remove("translate-x-12", "opacity-0");
+            }, 10);
+
+            // Auto dismiss
+            setTimeout(() => {
+                toast.classList.add("translate-x-12", "opacity-0");
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Live Log Screen
+        function logSystem(message, type = "info") {
+            const logScreen = document.getElementById("system-log-screen");
+            const timestamp = new Date().toLocaleTimeString();
+            let color = "text-slate-300";
+            if (type === "error") color = "text-rose-400";
+            if (type === "success") color = "text-green-400";
+            if (type === "warn") color = "text-amber-400";
+
+            logScreen.innerHTML += `<div class="${color}">[${timestamp}] ${message}</div>`;
+            logScreen.scrollTop = logScreen.scrollHeight;
+        }
+
+        // Theme Engineering System
+        function renderThemes() {
+            const grid = document.getElementById("theme-grid");
+            const quickSelect = document.getElementById("quick-theme-select");
+            grid.innerHTML = "";
+            quickSelect.innerHTML = "";
+
+            themes.forEach(t => {
+                // Render Settings Grid Cards
+                const card = document.createElement("button");
+                card.onclick = () => applyTheme(t.id);
+                card.className = `p-3 rounded-xl border flex items-center justify-between transition-all font-bold text-xs bg-white ${activeThemeId === t.id ? 'border-2 ring-2' : 'border-slate-200 hover:border-slate-300'}`;
+                card.style.borderColor = activeThemeId === t.id ? `rgb(${t.rgb})` : '';
+                card.style.color = `rgb(${t.rgb})`;
+                
+                card.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 h-4 rounded-full" style="background-color: rgb(${t.rgb})"></span>
+                        <span>${t.name}</span>
+                    </div>
+                    ${activeThemeId === t.id ? '<i data-lucide="check" class="w-4 h-4"></i>' : ''}
+                `;
+                grid.appendChild(card);
+
+                // Populate Header Dropdown
+                const opt = document.createElement("option");
+                opt.value = t.id;
+                opt.textContent = t.name;
+                opt.selected = t.id === activeThemeId;
+                quickSelect.appendChild(opt);
+            });
+            lucide.createIcons();
+        }
+
+        function applyTheme(themeId) {
+            const theme = themes.find(t => t.id === themeId) || themes[0];
+            activeThemeId = theme.id;
+            localStorage.setItem("vora_theme", themeId);
+
+            // Inject Custom Variables Stylesheet
+            const varsBlock = document.getElementById("theme-vars");
+            varsBlock.innerHTML = `
+                :root {
+                    --primary-rgb: ${theme.rgb};
+                    --primary-hover-rgb: ${theme.hoverRgb};
+                    --accent-rgb: ${theme.accentRgb};
+                }
+            `;
+
+            // Re-render components to reflect theme
+            renderThemes();
+            logSystem(`Tema diubah menjadi ${theme.name}.`, "success");
+        }
+
+        // Toggle Workspace Navigation Views
+        function switchView(target) {
+            const sections = [
+                { id: 'dashboard', view: 'view-dashboard' },
+                { id: 'generator', view: 'view-generator' },
+                { id: 'ai-script', view: 'view-ai-script' },
+                { id: 'templates', view: 'view-templates' },
+                { id: 'history', view: 'view-history' },
+                { id: 'backup', view: 'view-backup' },
+                { id: 'settings', view: 'view-settings' }
+            ];
+
+            sections.forEach(s => {
+                const el = document.getElementById(s.view);
+                if (s.id === target) {
+                    el.classList.remove("hidden");
+                } else {
+                    el.classList.add("hidden");
+                }
+            });
+
+            // Highlight Active Sidebar Item
+            document.querySelectorAll("#sidebar-nav .nav-item").forEach(item => {
+                const itemTarget = item.getAttribute("data-target");
+                if (itemTarget === target) {
+                    item.className = "nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all bg-blue-50 text-blue-700";
+                    // Apply theme highlight styling override programmatically
+                    item.style.backgroundColor = `rgba(var(--primary-rgb), 0.1)`;
+                    item.style.color = `rgb(var(--primary-rgb))`;
+                } else {
+                    item.className = "nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all";
+                    item.style.backgroundColor = '';
+                    item.style.color = '';
+                }
+            });
+
+            // Set Title Header
+            const titleMap = {
+                dashboard: "Dashboard Studio",
+                generator: "Voice Over Generator",
+                "ai-script": "Asisten Naskah Gemini AI",
+                templates: "Pustaka Template",
+                history: "Arsip Audio Studio",
+                backup: "Impor, Ekspor & Backup",
+                settings: "Pengaturan Studio"
+            };
+            document.getElementById("page-title").textContent = titleMap[target] || "Studio Vora";
+        }
+
+        // Navigation Bindings
+        function setupEventListeners() {
+            document.querySelectorAll("#sidebar-nav .nav-item").forEach(item => {
+                item.addEventListener("click", () => {
+                    const target = item.getAttribute("data-target");
+                    switchView(target);
+                });
+            });
+
+            // Quick Theme select binding
+            document.getElementById("quick-theme-select").addEventListener("change", (e) => {
+                applyTheme(e.target.value);
+            });
+
+            // Save API key
+            document.getElementById("save-api-btn").addEventListener("click", () => {
+                const key = document.getElementById("api-key-input").value.trim();
+                localStorage.setItem("vora_gemini_key", key);
+                verifyAPIKeyOnLoad();
+                showToast("API Key disimpan dengan sukses!", "success");
+                logSystem("Gemini API Key diperbarui.");
+            });
+
+            // Modulasi Slider Info Track
+            const sliderSpeed = document.getElementById("slide-speed");
+            sliderSpeed.addEventListener("input", (e) => {
+                const val = e.target.value;
+                document.getElementById("val-speed").textContent = `${val === "1.0" ? "Normal" : val + "x"}`;
+            });
+
+            const sliderPitch = document.getElementById("slide-pitch");
+            sliderPitch.addEventListener("input", (e) => {
+                const val = e.target.value;
+                let text = "Sedang (1.0)";
+                if (val < 1.0) text = `Rendah (${val})`;
+                if (val > 1.0) text = `Tinggi (${val})`;
+                document.getElementById("val-pitch").textContent = text;
+            });
+
+            const sliderVolume = document.getElementById("slide-volume");
+            sliderVolume.addEventListener("input", (e) => {
+                document.getElementById("val-volume").textContent = `${e.target.value}%`;
+            });
+
+            const sliderEmphasis = document.getElementById("slide-emphasis");
+            sliderEmphasis.addEventListener("input", (e) => {
+                const val = e.target.value;
+                const labels = ["Lemah", "Sedang", "Kuat"];
+                document.getElementById("val-emphasis").textContent = labels[val];
+            });
+
+            // Drag Drop File TXT handler
+            const textZone = document.getElementById("text-input");
+            const dropZone = document.getElementById("drop-zone");
+
+            dropZone.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropZone.classList.add("border-blue-500", "ring-2", "ring-blue-500/20");
+            });
+
+            dropZone.addEventListener("dragleave", () => {
+                dropZone.classList.remove("border-blue-500", "ring-2", "ring-blue-500/20");
+            });
+
+            dropZone.addEventListener("drop", (e) => {
+                e.preventDefault();
+                dropZone.classList.remove("border-blue-500", "ring-2", "ring-blue-500/20");
+                const file = e.dataTransfer.files[0];
+                if (file && file.type === "text/plain") {
+                    readTextFile(file);
+                } else {
+                    showToast("Harap masukkan berkas berformat .txt!", "error");
+                }
+            });
+
+            // Manual upload trigger
+            document.getElementById("import-txt-btn").addEventListener("click", () => {
+                document.getElementById("txt-file-input").click();
+            });
+
+            document.getElementById("txt-file-input").addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                if (file) readTextFile(file);
+            });
+
+            // Reset draft
+            document.getElementById("clear-draft-btn").addEventListener("click", () => {
+                textZone.value = "";
+                updateCharAndDuration();
+                localStorage.removeItem("vora_draft");
+                document.getElementById("current-draft-indicator").classList.add("hidden");
+                showToast("Draf berhasil direset.", "info");
+            });
+
+            // Save current input to Manual Template
+            document.getElementById("save-template-quick").addEventListener("click", () => {
+                const content = textZone.value.trim();
+                if (!content) {
+                    showToast("Tulis naskah terlebih dahulu sebelum disimpan!", "error");
+                    return;
+                }
+                openTemplateModal(content);
+            });
+
+            // Trigger AI Generator Voice Synthesis!
+            document.getElementById("generate-voice-btn").addEventListener("click", generateVoiceOverAction);
+
+            // Player control events
+            document.getElementById("player-play-btn").addEventListener("click", toggleAudioPlayback);
+            document.getElementById("player-stop-btn").addEventListener("click", stopAudioPlayback);
+            document.getElementById("player-vol-slider").addEventListener("input", adjustPlayerVolume);
+            document.getElementById("player-speed-select").addEventListener("change", adjustPlayerSpeed);
+            document.getElementById("player-download-btn").addEventListener("click", downloadActiveTrack);
+            document.getElementById("player-fav-btn").addEventListener("click", toggleFavoriteActiveTrack);
+
+            // Seekbar manual seek
+            document.getElementById("progress-container").addEventListener("click", (e) => {
+                if (!currentActiveAudio) return;
+                const rect = e.currentTarget.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                currentActiveAudio.currentTime = pos * currentActiveAudio.duration;
+                updateProgressBar();
+            });
+
+            // Restore Backup Trigger
+            document.getElementById("import-restore-file").addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const data = JSON.parse(event.target.result);
+                            if (data.vora_history && data.vora_templates) {
+                                // Restore history
+                                voiceHistory = data.vora_history;
+                                localStorage.setItem("vora_history", JSON.stringify(voiceHistory));
+                                // Restore templates
+                                manualTemplates = data.vora_templates;
+                                localStorage.setItem("vora_templates", JSON.stringify(manualTemplates));
+                                
+                                // Re-sync
+                                renderManualTemplates();
+                                renderHistoryTable();
+                                updateDashboardStats();
+                                showToast("Backup data berhasil dipulihkan secara penuh!", "success");
+                                logSystem("Sistem dipulihkan dari cadangan eksternal.", "success");
+                            } else {
+                                showToast("Berkas backup tidak valid!", "error");
+                            }
+                        } catch (err) {
+                            showToast("Gagal membaca berkas JSON backup.", "error");
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            });
+
+            // Clear all history with Custom Modal
+            document.getElementById("clear-all-history").addEventListener("click", () => {
+                showCustomConfirm(
+                    "Hapus Semua Riwayat?", 
+                    "Tindakan ini akan menghapus seluruh riwayat produksi voice-over beserta berkas audio di penyimpanan IndexedDB secara permanen.", 
+                    async () => {
+                        voiceHistory = [];
+                        localStorage.setItem("vora_history", JSON.stringify([]));
+                        await clearAudioDB();
+                        renderHistoryTable();
+                        updateDashboardStats();
+                        showToast("Seluruh riwayat berhasil dihapus.", "success");
+                        logSystem("Seluruh riwayat database audio diresik.", "warn");
+                    }
+                );
+            });
+
+            // AI Script generator button
+            document.getElementById("ai-generate-script-btn").addEventListener("click", generateAIScriptWithGemini);
+            document.getElementById("ai-copy-script").addEventListener("click", copyAIScriptToClipboard);
+            document.getElementById("ai-apply-script").addEventListener("click", applyAIScriptToEditor);
+        }
+
+        function readTextFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById("text-input").value = e.target.result;
+                updateCharAndDuration();
+                localStorage.setItem("vora_draft", e.target.result);
+                document.getElementById("current-draft-indicator").classList.remove("hidden");
+                showToast("Berkas .txt sukses diimpor!", "success");
+                logSystem(`File ${file.name} diimpor ke workspace.`);
+            };
+            reader.readAsText(file);
+        }
+
+        // Check & Update API Badge
+        function verifyAPIKeyOnLoad() {
+            const key = localStorage.getItem("vora_gemini_key") || "";
+            const badge = document.getElementById("api-status-badge");
+            if (key && key.length > 20) {
+                badge.className = "flex items-center gap-1 text-[11px] font-medium text-emerald-600";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Online`;
+            } else {
+                badge.className = "flex items-center gap-1 text-[11px] font-medium text-red-500";
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Offline`;
+            }
+        }
+
+        // --- DASHBOARD STATS MANAGEMENT ---
+        function updateDashboardStats() {
+            const history = voiceHistory || [];
+            
+            systemStats.totalVoice = history.length;
+            
+            let totalDur = 0;
+            let totalChars = 0;
+            let totalFavs = 0;
+            
+            history.forEach(item => {
+                totalDur += parseFloat(item.duration) || 0;
+                totalChars += parseInt(item.chars) || 0;
+                if (item.favorite) totalFavs++;
+            });
+
+            systemStats.totalDuration = totalDur;
+            systemStats.totalTemplates = manualTemplates.length;
+            systemStats.totalDownload = parseInt(localStorage.getItem("vora_download_count") || 0);
+            systemStats.totalChars = totalChars;
+            systemStats.favoriteCount = totalFavs;
+
+            // Set UI values
+            document.getElementById("stat-total-voice").textContent = systemStats.totalVoice;
+            document.getElementById("stat-total-duration").textContent = `${systemStats.totalDuration}s`;
+            document.getElementById("stat-total-templates").textContent = systemStats.totalTemplates;
+            document.getElementById("stat-total-download").textContent = systemStats.totalDownload;
+            document.getElementById("stat-total-chars").textContent = systemStats.totalChars;
+            document.getElementById("stat-favorite-count").textContent = systemStats.favoriteCount;
+            document.getElementById("header-char-counter").textContent = systemStats.totalChars;
+        }
+
+        // --- MANUAL TEMPLATES SYSTEM ---
+        function renderManualTemplates() {
+            const grid = document.getElementById("templates-grid");
+            grid.innerHTML = "";
+
+            manualTemplates.forEach(tpl => {
+                const card = document.createElement("div");
+                card.className = "bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="px-2 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-lg border border-blue-100 uppercase tracking-wider">${tpl.category}</span>
+                            <div class="flex items-center gap-1">
+                                <button onclick="editTemplate('${tpl.id}')" class="p-1 hover:bg-slate-100 rounded text-slate-500 hover:text-slate-800" title="Edit">
+                                    <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                                </button>
+                                <button onclick="deleteTemplate('${tpl.id}')" class="p-1 hover:bg-rose-50 rounded text-slate-400 hover:text-rose-600" title="Hapus">
+                                    <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm mb-2 line-clamp-1">${tpl.title}</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">${tpl.text}</p>
+                    </div>
+                    <button onclick="useTemplateToEditor('${tpl.id}')" class="w-full py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all">
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> Gunakan Naskah
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+            updateDashboardStats();
+        }
+
+        function filterTemplates(cat) {
+            // Apply visual filter styling
+            document.querySelectorAll("#template-categories-filter button").forEach(btn => {
+                if (btn.textContent === cat) {
+                    btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white";
+                } else {
+                    btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all bg-white text-slate-600 hover:bg-slate-50 border border-slate-200";
+                }
+            });
+
+            // Filter
+            const grid = document.getElementById("templates-grid");
+            const items = cat === "Semua" ? manualTemplates : manualTemplates.filter(t => t.category === cat);
+            grid.innerHTML = "";
+            items.forEach(tpl => {
+                const card = document.createElement("div");
+                card.className = "bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="px-2 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-lg border border-blue-100 uppercase tracking-wider">${tpl.category}</span>
+                            <div class="flex items-center gap-1">
+                                <button onclick="editTemplate('${tpl.id}')" class="p-1 hover:bg-slate-100 rounded text-slate-500 hover:text-slate-800">
+                                    <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                                </button>
+                                <button onclick="deleteTemplate('${tpl.id}')" class="p-1 hover:bg-rose-50 rounded text-slate-400 hover:text-rose-600">
+                                    <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm mb-2 line-clamp-1">${tpl.title}</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">${tpl.text}</p>
+                    </div>
+                    <button onclick="useTemplateToEditor('${tpl.id}')" class="w-full py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all">
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> Gunakan Naskah
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function useTemplateToEditor(id) {
+            const tpl = manualTemplates.find(t => t.id === id);
+            if (tpl) {
+                document.getElementById("text-input").value = tpl.text;
+                updateCharAndDuration();
+                localStorage.setItem("vora_draft", tpl.text);
+                document.getElementById("current-draft-indicator").classList.remove("hidden");
+                switchView("generator");
+                showToast("Naskah diterapkan ke workspace!", "success");
+            }
+        }
+
+        function openTemplateModal(initialText = "") {
+            const modal = document.getElementById("template-modal");
+            const card = document.getElementById("template-modal-card");
+            
+            document.getElementById("modal-title").textContent = "Tambah Template Naskah";
+            document.getElementById("modal-template-id").value = "";
+            document.getElementById("modal-template-title").value = "";
+            document.getElementById("modal-template-text").value = initialText;
+
+            modal.classList.remove("opacity-0", "pointer-events-none");
+            card.classList.remove("scale-95");
+            card.classList.add("scale-100");
+        }
+
+        function closeTemplateModal() {
+            const modal = document.getElementById("template-modal");
+            const card = document.getElementById("template-modal-card");
+            
+            modal.classList.add("opacity-0", "pointer-events-none");
+            card.classList.remove("scale-100");
+            card.classList.add("scale-95");
+        }
+
+        function saveManualTemplate() {
+            const id = document.getElementById("modal-template-id").value;
+            const title = document.getElementById("modal-template-title").value.trim();
+            const category = document.getElementById("modal-template-category").value;
+            const text = document.getElementById("modal-template-text").value.trim();
+
+            if (!title || !text) {
+                showToast("Judul dan Isi naskah tidak boleh kosong!", "error");
+                return;
+            }
+
+            if (id) {
+                // Edit
+                const index = manualTemplates.findIndex(t => t.id === id);
+                if (index !== -1) {
+                    manualTemplates[index] = { id, title, category, text };
+                }
+            } else {
+                // New
+                const newId = `tpl-${Date.now()}`;
+                manualTemplates.push({ id: newId, title, category, text });
+            }
+
+            localStorage.setItem("vora_templates", JSON.stringify(manualTemplates));
+            renderManualTemplates();
+            closeTemplateModal();
+            showToast("Template berhasil disimpan!", "success");
+        }
+
+        function editTemplate(id) {
+            const tpl = manualTemplates.find(t => t.id === id);
+            if (tpl) {
+                openTemplateModal();
+                document.getElementById("modal-title").textContent = "Edit Template Naskah";
+                document.getElementById("modal-template-id").value = tpl.id;
+                document.getElementById("modal-template-title").value = tpl.title;
+                document.getElementById("modal-template-category").value = tpl.category;
+                document.getElementById("modal-template-text").value = tpl.text;
+            }
+        }
+
+        function deleteTemplate(id) {
+            showCustomConfirm(
+                "Hapus Template?", 
+                "Apakah Anda yakin ingin menghapus template naskah ini dari pustaka Anda?", 
+                () => {
+                    manualTemplates = manualTemplates.filter(t => t.id !== id);
+                    localStorage.setItem("vora_templates", JSON.stringify(manualTemplates));
+                    renderManualTemplates();
+                    showToast("Template dihapus.", "info");
+                }
+            );
+        }
+
+        // --- HISTORICAL TRACK DATABASE ---
+        function renderHistoryTable() {
+            const tbody = document.getElementById("history-table-body");
+            tbody.innerHTML = "";
+
+            if (voiceHistory.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-10 text-slate-400 font-medium">
+                            <i data-lucide="archive" class="w-8 h-8 mx-auto mb-2 opacity-30"></i>
+                            Belum ada riwayat rekaman voice over di sistem.
+                        </td>
+                    </tr>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            // Sort history desc (newest first)
+            const sortedHistory = [...voiceHistory].reverse();
+
+            sortedHistory.forEach(item => {
+                const tr = document.createElement("tr");
+                tr.className = "hover:bg-slate-50/50 transition-all";
+                tr.innerHTML = `
+                    <td class="p-4">
+                        <button onclick="toggleFavorite('${item.id}')" class="text-slate-300 hover:text-rose-500 transition-all">
+                            <i data-lucide="heart" class="w-4 h-4 ${item.favorite ? 'fill-rose-500 text-rose-500' : 'fill-transparent text-slate-300'}"></i>
+                        </button>
+                    </td>
+                    <td class="p-4 max-w-xs">
+                        <div class="truncate font-bold text-slate-800" title="${item.text}">${item.name}</div>
+                        <div class="text-[10px] text-slate-400 truncate mt-0.5" title="${item.text}">${item.text}</div>
+                    </td>
+                    <td class="p-4">
+                        <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-semibold">${item.voiceName}</span>
+                    </td>
+                    <td class="p-4 space-y-0.5 text-[10px]">
+                        <div>Style: <strong class="text-slate-700">${item.style}</strong></div>
+                        <div>Kecepatan: <strong class="text-slate-700">${item.speed}x</strong> | Durasi: <strong class="text-slate-700">${item.duration}s</strong></div>
+                    </td>
+                    <td class="p-4 text-slate-400 text-[10px]">${item.date}</td>
+                    <td class="p-4 text-right">
+                        <div class="flex items-center justify-end gap-1.5">
+                            <button onclick="loadHistoryToPlayer('${item.id}')" class="p-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-all" title="Putar">
+                                <i data-lucide="play" class="w-3.5 h-3.5"></i>
+                            </button>
+                            <button onclick="downloadHistoryFile('${item.id}')" class="p-1.5 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg transition-all" title="Unduh WAV">
+                                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                            </button>
+                            <button onclick="deleteHistoryItem('${item.id}')" class="p-1.5 hover:bg-rose-50 text-slate-400 hover:text-rose-600 rounded-lg transition-all" title="Hapus">
+                                <i data-lucide="trash" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+            updateDashboardStats();
+        }
+
+        async function toggleFavorite(id) {
+            const index = voiceHistory.findIndex(i => i.id === id);
+            if (index !== -1) {
+                voiceHistory[index].favorite = !voiceHistory[index].favorite;
+                localStorage.setItem("vora_history", JSON.stringify(voiceHistory));
+                renderHistoryTable();
+                
+                // Update player panel if currently loaded
+                if (currentPlayingId === id) {
+                    const playerFavBtn = document.getElementById("player-fav-btn");
+                    if (voiceHistory[index].favorite) {
+                        playerFavBtn.innerHTML = `<i data-lucide="heart" class="w-4 h-4 fill-rose-500 text-rose-500"></i>`;
+                    } else {
+                        playerFavBtn.innerHTML = `<i data-lucide="heart" class="w-4 h-4 fill-transparent text-slate-400"></i>`;
+                    }
+                    lucide.createIcons();
+                }
+                
+                showToast(voiceHistory[index].favorite ? "Ditambahkan ke Favorit!" : "Dihapus dari Favorit.", "success");
+            }
+        }
+
+        async function deleteHistoryItem(id) {
+            showCustomConfirm(
+                "Hapus Rekaman?", 
+                "Apakah Anda yakin ingin menghapus item rekaman ini secara permanen dari penyimpanan lokal?", 
+                async () => {
+                    voiceHistory = voiceHistory.filter(i => i.id !== id);
+                    localStorage.setItem("vora_history", JSON.stringify(voiceHistory));
+                    await deleteAudioBlobFromDB(id);
+                    renderHistoryTable();
+                    showToast("Item rekaman berhasil dihapus.", "info");
+                    logSystem(`Item audio ID ${id} dihapus dari IndexedDB.`);
+                }
+            );
+        }
+
+        async function loadHistoryToPlayer(id) {
+            const item = voiceHistory.find(i => i.id === id);
+            if (!item) return;
+
+            // Fetch Blob from IndexedDB
+            const blob = await getAudioBlobFromDB(id);
+            if (!blob) {
+                showToast("Gagal memuat file audio dari penyimpanan lokal. Mungkin data terhapus.", "error");
+                return;
+            }
+
+            currentAudioBlob = blob;
+            currentPlayingId = id;
+
+            // Prepare Audio element
+            if (currentActiveAudio) {
+                currentActiveAudio.pause();
+            }
+
+            const audioUrl = URL.createObjectURL(blob);
+            currentActiveAudio = new Audio(audioUrl);
+            
+            // Set Player Panel Details
+            document.getElementById("player-track-name").textContent = item.name;
+            document.getElementById("player-track-meta").textContent = `Voice: ${item.voiceName} | Style: ${item.style} | Speed: ${item.speed}x`;
+            
+            // Player Status Update
+            document.getElementById("player-play-btn").removeAttribute("disabled");
+            document.getElementById("player-stop-btn").removeAttribute("disabled");
+            document.getElementById("player-download-btn").removeAttribute("disabled");
+            document.getElementById("player-fav-btn").removeAttribute("disabled");
+
+            const playerFavBtn = document.getElementById("player-fav-btn");
+            if (item.favorite) {
+                playerFavBtn.innerHTML = `<i data-lucide="heart" class="w-4 h-4 fill-rose-500 text-rose-500"></i>`;
+            } else {
+                playerFavBtn.innerHTML = `<i data-lucide="heart" class="w-4 h-4 fill-transparent text-slate-400"></i>`;
+            }
+            lucide.createIcons();
+
+            currentActiveAudio.addEventListener("loadedmetadata", () => {
+                document.getElementById("player-time-total").textContent = formatTime(currentActiveAudio.duration);
+            });
+
+            currentActiveAudio.addEventListener("ended", () => {
+                stopAudioPlayback();
+            });
+
+            // Start Playback automatically
+            toggleAudioPlayback();
+            switchView("generator"); // Focus view on Generator Player panel
+            logSystem(`Audio loaded to player: ${item.name}`);
+        }
+
+        async function downloadHistoryFile(id) {
+            const item = voiceHistory.find(i => i.id === id);
+            const blob = await getAudioBlobFromDB(id);
+            if (item && blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `${item.fileName}`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                // Tracker download
+                let currentCount = parseInt(localStorage.getItem("vora_download_count") || 0);
+                localStorage.setItem("vora_download_count", currentCount + 1);
+                updateDashboardStats();
+                showToast("Download Berhasil!", "success");
+            }
+        }
+
+        // --- BACKUP & EXPORTS ---
+        function exportHistory(format) {
+            if (voiceHistory.length === 0) {
+                showToast("Tidak ada data riwayat untuk diekspor!", "error");
+                return;
+            }
+
+            if (format === 'json') {
+                const backupData = {
+                    vora_history: voiceHistory,
+                    vora_templates: manualTemplates
+                };
+                const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `Vora_Backup_Studio_${Date.now()}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast("Data JSON berhasil diekspor!", "success");
+            } else if (format === 'csv') {
+                let csvContent = "data:text/csv;charset=utf-8,ID,Nama,Naskah,Voice,Style,Kecepatan,Durasi,Tanggal,Favorit\n";
+                voiceHistory.forEach(i => {
+                    const cleanText = i.text.replace(/"/g, '""');
+                    csvContent += `"${i.id}","${i.name}","${cleanText}","${i.voiceName}","${i.style}","${i.speed}","${i.duration}","${i.date}","${i.favorite}"\n`;
+                });
+                const encodedUri = encodeURI(csvContent);
+                const a = document.createElement("a");
+                a.href = encodedUri;
+                a.download = `Vora_Riwayat_Voice_${Date.now()}.csv`;
+                a.click();
+                showToast("File CSV berhasil diunduh!", "success");
+            }
+        }
+
+        // --- LIVE AUDIO PLAYER INTERACTIVE SYSTEM ---
+        function toggleAudioPlayback() {
+            if (!currentActiveAudio) return;
+
+            const btn = document.getElementById("player-play-btn");
+            if (currentActiveAudio.paused) {
+                currentActiveAudio.play();
+                btn.innerHTML = `<i data-lucide="pause" class="w-5 h-5"></i>`;
+                lucide.createIcons();
+                startWaveformAnimation();
+                audioProgressTimer = setInterval(updateProgressBar, 200);
+            } else {
+                currentActiveAudio.pause();
+                btn.innerHTML = `<i data-lucide="play" class="w-5 h-5 ml-0.5"></i>`;
+                lucide.createIcons();
+                stopWaveformAnimation();
+                clearInterval(audioProgressTimer);
+            }
+        }
+
+        function stopAudioPlayback() {
+            if (!currentActiveAudio) return;
+            currentActiveAudio.pause();
+            currentActiveAudio.currentTime = 0;
+            document.getElementById("player-play-btn").innerHTML = `<i data-lucide="play" class="w-5 h-5 ml-0.5"></i>`;
+            lucide.createIcons();
+            stopWaveformAnimation();
+            clearInterval(audioProgressTimer);
+            updateProgressBar();
+        }
+
+        function adjustPlayerVolume(e) {
+            if (currentActiveAudio) {
+                currentActiveAudio.volume = e.target.value;
+            }
+        }
+
+        function adjustPlayerSpeed(e) {
+            if (currentActiveAudio) {
+                currentActiveAudio.playbackRate = parseFloat(e.target.value);
+            }
+        }
+
+        function updateProgressBar() {
+            if (!currentActiveAudio) return;
+            const progress = (currentActiveAudio.currentTime / currentActiveAudio.duration) * 100;
+            document.getElementById("player-progress-bar").style.width = `${progress}%`;
+            document.getElementById("player-time-current").textContent = formatTime(currentActiveAudio.currentTime);
+        }
+
+        function downloadActiveTrack() {
+            if (currentPlayingId) {
+                downloadHistoryFile(currentPlayingId);
+            }
+        }
+
+        function toggleFavoriteActiveTrack() {
+            if (currentPlayingId) {
+                toggleFavorite(currentPlayingId);
+            }
+        }
+
+        // Simulating Waveform Action
+        let waveInterval = null;
+        function startWaveformAnimation() {
+            const bars = document.querySelectorAll("#waveform-bars div");
+            waveInterval = setInterval(() => {
+                bars.forEach(bar => {
+                    const height = Math.floor(Math.random() * 48) + 8; // Random bar heights for activity feed
+                    bar.style.height = `${height}px`;
+                    // Add modern gradient theme colors dynamic mapping
+                    const theme = themes.find(t => t.id === activeThemeId) || themes[0];
+                    bar.style.backgroundColor = `rgb(${theme.rgb})`;
+                });
+            }, 100);
+        }
+
+        function stopWaveformAnimation() {
+            clearInterval(waveInterval);
+            const bars = document.querySelectorAll("#waveform-bars div");
+            bars.forEach(bar => {
+                bar.style.height = `16px`; // Return to rest heights
+                bar.style.backgroundColor = `rgba(156, 163, 175, 0.2)`;
+            });
+        }
+
+        function formatTime(secs) {
+            if (isNaN(secs)) return "00:00";
+            const m = Math.floor(secs / 60).toString().padStart(2, "0");
+            const s = Math.floor(secs % 60).toString().padStart(2, "0");
+            return `${m}:${s}`;
+        }
+
+
+        // --- GEMINI API INTEGRATIONS ---
+
+        // (A) TEXT TO SPEECH SCRIPT ENGINE: gemini-2.5-flash-preview-tts
+        async function generateVoiceOverAction() {
+            const apiKey = localStorage.getItem("vora_gemini_key") || "";
+            if (!apiKey) {
+                showToast("Gemini API Key belum dimasukkan! Harap masukkan key di sidebar.", "error");
+                switchView("settings");
+                return;
+            }
+
+            const text = document.getElementById("text-input").value.trim();
+            if (!text) {
+                showToast("Masukkan naskah iklan terlebih dahulu!", "error");
+                return;
+            }
+
+            if (text.length > 2000) {
+                showToast("Panjang naskah melebihi batas maksimum 2000 karakter!", "error");
+                return;
+            }
+
+            // Options configuration
+            const voiceRaw = document.getElementById("voice-select").value; // e.g. Zephyr:Male1
+            const [geminiVoice, voiceLabel] = voiceRaw.split(":");
+            const style = document.getElementById("style-select").value;
+            const speed = document.getElementById("slide-speed").value;
+            const pitch = document.getElementById("slide-pitch").value;
+            const volume = document.getElementById("slide-volume").value;
+            const emphasis = document.getElementById("slide-emphasis").value;
+
+            // Loader status triggers
+            const btn = document.getElementById("generate-voice-btn");
+            const originalHTML = btn.innerHTML;
+            btn.setAttribute("disabled", "true");
+            btn.innerHTML = `<span class="flex items-center gap-2"><i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Memproses Audio...</span>`;
+            lucide.createIcons();
+
+            document.getElementById("loading-bar").style.width = "30%";
+            logSystem(`Mengirim naskah iklan ke Gemini TTS menggunakan suara ${geminiVoice} (${style})...`);
+
+            try {
+                // Construct prompt to include user settings & speed instructions organically inside TTS
+                const speedMap = { "0.5": "sangat lambat", "0.7": "lambat", "1.0": "kecepatan normal", "1.3": "sedikit cepat", "1.5": "cepat", "2.0": "sangat cepat" };
+                const speedDesc = speedMap[speed] || "normal";
+                const pitchMap = { "0.5": "suara berat rendah", "1.0": "nada normal", "1.5": "nada tinggi nyaring" };
+                const pitchDesc = pitchMap[pitch] || "normal";
+                const emphasisLabels = ["tanpa penekanan berlebih", "penekanan kata wajar dan natural", "penekanan kata yang sangat kuat dan persuasif"];
+                const emphasisDesc = emphasisLabels[emphasis];
+
+                // Advanced prompt rules (Guardrails to enforce natural Indonesian dialect)
+                const coreTtsInstructions = `Bicaralah dengan gaya ${style}, menggunakan ${speedDesc}, ${pitchDesc}, dan dengan ${emphasisDesc}. Pastikan pelafalan bahasa Indonesia terdengar sangat alami, ramah, dan meyakinkan layaknya pengisi suara profesional. Hindari jeda aneh pada singkatan teknologi seperti SSD, VGA, RAM, atau ASUS, ucapkan secara lancar.`;
+                
+                const finalPrompt = `${coreTtsInstructions} Naskah: ${text}`;
+
+                // Fetch response with exponential backoff
+                const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: finalPrompt }] }],
+                        generationConfig: {
+                            responseModalities: ["AUDIO"],
+                            speechConfig: {
+                                voiceConfig: {
+                                    prebuiltVoiceConfig: {
+                                        voiceName: geminiVoice
+                                    }
+                                }
+                            }
+                        }
+                    })
+                });
+
+                document.getElementById("loading-bar").style.width = "70%";
+                const data = await response.json();
+
+                // Extract PCM data and Sample Rate from Gemini's response
+                const audioPart = data.candidates?.[0]?.content?.parts?.find(p => p.inlineData && p.inlineData.mimeType);
+                if (!audioPart) {
+                    throw new Error("Gemini API tidak mengembalikan konten audio valid. Cek limitasi API atau ketersediaan model.");
+                }
+
+                const base64Data = audioPart.inlineData.data;
+                const mimeType = audioPart.inlineData.mimeType; // e.g. "audio/L16;rate=24000" or similar
+                
+                // Extract sample rate from mimetype, default to 24000
+                let sampleRate = 24000;
+                const rateMatch = mimeType.match(/rate=(\d+)/);
+                if (rateMatch && rateMatch[1]) {
+                    sampleRate = parseInt(rateMatch[1]);
+                }
+
+                // Decode base64 PCM to ArrayBuffer
+                const binaryString = atob(base64Data);
+                const len = binaryString.length;
+                const pcmBuffer = new ArrayBuffer(len);
+                const pcmView = new Uint8Array(pcmBuffer);
+                for (let i = 0; i < len; i++) {
+                    pcmView[i] = binaryString.charCodeAt(i);
+                }
+
+                // Convert PCM to fully valid WAV File
+                const wavBlob = pcmToWav(pcmBuffer, sampleRate);
+                
+                // Save meta to history list
+                const trackId = `track-${Date.now()}`;
+                const titleWord = text.split(" ").slice(0, 3).join(" ") + "...";
+                const recordName = `VO - ${voiceLabel} (${titleWord})`;
+                const itemMeta = {
+                    id: trackId,
+                    name: recordName,
+                    fileName: `Vora_Voice_${Date.now()}.wav`,
+                    text: text,
+                    voiceName: voiceLabel,
+                    style: style,
+                    speed: speed,
+                    duration: Math.ceil(text.length / 12), // Calculated duration
+                    chars: text.length,
+                    date: new Date().toLocaleDateString("id-ID") + " " + new Date().toLocaleTimeString("id-ID", {hour: '2-digit', minute:'2-digit'}),
+                    favorite: false
+                };
+
+                // Store both Audio File & Meta locally
+                voiceHistory.push(itemMeta);
+                localStorage.setItem("vora_history", JSON.stringify(voiceHistory));
+                await saveAudioBlobToDB(trackId, wavBlob);
+
+                document.getElementById("loading-bar").style.width = "100%";
+                showToast("Sintesis Voice Over Berhasil diproduksi!", "success");
+                logSystem(`Voice Over berhasil dirancang untuk: "${recordName}"`, "success");
+
+                // Instantly sync & load track to player
+                renderHistoryTable();
+                await loadHistoryToPlayer(trackId);
+
+            } catch (err) {
+                console.error(err);
+                showToast(err.message || "Gagal menghubungi server Gemini TTS.", "error");
+                logSystem(`Kesalahan Proses TTS: ${err.message}`, "error");
+            } finally {
+                btn.removeAttribute("disabled");
+                btn.innerHTML = originalHTML;
+                lucide.createIcons();
+                setTimeout(() => {
+                    document.getElementById("loading-bar").style.width = "0%";
+                }, 300);
+            }
+        }
+
+        // Convert PCM-16 L16 byte stream to WAV container format
+        function pcmToWav(pcmData, sampleRate) {
+            const buffer = new ArrayBuffer(44 + pcmData.byteLength);
+            const view = new DataView(buffer);
+            
+            // RIFF chunk descriptor
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, 36 + pcmData.byteLength, true);
+            writeString(view, 8, 'WAVE');
+            
+            // "fmt " sub-chunk
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);             // Subchunk1Size = 16 for PCM
+            view.setUint16(20, 1, true);              // AudioFormat = 1 (linear quantization)
+            view.setUint16(22, 1, true);              // NumChannels = 1 channel (mono)
+            view.setUint32(24, sampleRate, true);     // SampleRate
+            view.setUint32(28, sampleRate * 2, true); // ByteRate = SampleRate * NumChannels * BitsPerSample/8
+            view.setUint16(32, 2, true);              // BlockAlign = NumChannels * BitsPerSample/8
+            view.setUint16(34, 16, true);             // BitsPerSample = 16-bit
+
+            // "data" sub-chunk
+            writeString(view, 36, 'data');
+            view.setUint32(40, pcmData.byteLength, true);
+            
+            // Transfer RAW PCM 16 data samples
+            const pcmView = new DataView(pcmData);
+            for (let i = 0; i < pcmData.byteLength; i++) {
+                view.setUint8(44 + i, pcmView.getUint8(i));
+            }
+            
+            return new Blob([buffer], { type: 'audio/wav' });
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+
+        // Exponential backoff robust fetch rules
+        async function fetchWithRetry(url, options = {}, retries = 5, delay = 1000) {
+            try {
+                const res = await fetch(url, options);
+                if (!res.ok) {
+                    const errData = await res.json().catch(() => ({}));
+                    const errMsg = errData.error?.message || `Status HTTP ${res.status}`;
+                    throw new Error(errMsg);
+                }
+                return res;
+            } catch (err) {
+                if (retries > 0) {
+                    logSystem(`Gagal terhubung, mencoba ulang dalam ${delay/1000}s...`);
+                    await new Promise(r => setTimeout(r, delay));
+                    return fetchWithRetry(url, options, retries - 1, delay * 2);
+                }
+                throw err;
+            }
+        }
+
+
+        // (B) AI TEMPLATE GENERATOR: Dynamic model fallback support (gemini-2.5-flash -> gemini-1.5-flash -> gemini-2.5-flash-preview-09-2025)
+        async function generateAIScriptWithGemini() {
+            const apiKey = localStorage.getItem("vora_gemini_key") || "";
+            if (!apiKey) {
+                showToast("Gemini API Key belum dimasukkan! Harap masukkan key di sidebar.", "error");
+                switchView("settings");
+                return;
+            }
+
+            // Collect variables
+            const type = document.getElementById("ai-product-type").value;
+            const name = document.getElementById("ai-prod-name").value.trim();
+            const brand = document.getElementById("ai-prod-brand").value.trim();
+            const cpu = document.getElementById("ai-prod-cpu").value.trim();
+            const ram = document.getElementById("ai-prod-ram").value.trim();
+            const ssd = document.getElementById("ai-prod-ssd").value.trim();
+            const vga = document.getElementById("ai-prod-vga").value.trim();
+            const price = document.getElementById("ai-prod-price").value.trim();
+            const condition = document.getElementById("ai-prod-condition").value;
+            const bonus = document.getElementById("ai-prod-bonus").value.trim();
+            const target = document.getElementById("ai-prod-target").value.trim();
+
+            if (!name || !brand) {
+                showToast("Harap isi Nama Produk dan Merek laptop terlebih dahulu!", "error");
+                return;
+            }
+
+            // Loader UI
+            const btn = document.getElementById("ai-generate-script-btn");
+            const originalHTML = btn.innerHTML;
+            btn.setAttribute("disabled", "true");
+            btn.innerHTML = `<span class="flex items-center gap-2"><i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Meracik Naskah...</span>`;
+            lucide.createIcons();
+
+            document.getElementById("loading-bar").style.width = "40%";
+            logSystem(`Mengirim detail produk "${brand} ${name}" ke Gemini model text...`);
+
+            // Output container clean
+            const outputBlocks = document.getElementById("ai-output-blocks");
+            outputBlocks.innerHTML = `
+                <div class="text-center py-20 text-slate-400 space-y-3">
+                    <i data-lucide="sparkles" class="w-8 h-8 mx-auto animate-pulse text-indigo-500"></i>
+                    <p class="text-xs font-bold text-slate-600">Gemini sedang menyusun skrip promosi terbaik...</p>
+                </div>
+            `;
+            lucide.createIcons();
+
+            // Construct exact system prompt instructions for product types
+            const systemPrompt = `Kamu adalah seorang Copywriter Iklan profesional Indonesia handal yang ahli dalam membuat naskah voice over promosi laptop, komputer, dan gadget. Format naskah harus interaktif, menghibur, memiliki struktur yang kuat (Judul, Hook menarik, Isi promosi spesifikasi, dan CTA persuasif). Naskah harus mengalir natural untuk didengarkan (easy-listening) saat dibaca oleh Voice Over AI.`;
+
+            const userQuery = `Buat naskah iklan promosi terstruktur untuk produk kategori ${type} dengan rincian berikut:
+            Merek & Nama Produk: ${brand} ${name}
+            Dapur Pacu (CPU): ${cpu}
+            Memori RAM: ${ram}
+            Penyimpanan (SSD): ${ssd}
+            Kartu Grafis (VGA): ${vga}
+            Harga Promo Spesial: ${price}
+            Kondisi: ${condition}
+            Bonus Penjualan: ${bonus}
+            Target Calon Pembeli Utama: ${target}
+
+            Tolong hasilkan data JSON yang berisi properti: 'judul', 'hook', 'isiIklan', dan 'cta'. Gunakan bahasa gaul tech-enthusiast Indonesia yang sopan namun sangat menjual.`;
+
+            // List of models to try in sequence for compatibility and resilience
+            const modelsToTry = ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-2.5-flash-preview-09-2025"];
+            let success = false;
+            let responseData = null;
+            let lastError = null;
+
+            for (const model of modelsToTry) {
+                try {
+                    logSystem(`Mencoba meracik naskah menggunakan model: ${model}...`);
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: userQuery }] }],
+                            systemInstruction: { parts: [{ text: systemPrompt }] },
+                            generationConfig: {
+                                responseMimeType: "application/json",
+                                responseSchema: {
+                                    type: "OBJECT",
+                                    properties: {
+                                        judul: { type: "STRING" },
+                                        hook: { type: "STRING" },
+                                        isiIklan: { type: "STRING" },
+                                        cta: { type: "STRING" }
+                                    },
+                                    required: ["judul", "hook", "isiIklan", "cta"]
+                                }
+                            }
+                        })
+                    });
+
+                    if (response.ok) {
+                        responseData = await response.json();
+                        success = true;
+                        logSystem(`Berhasil menggunakan model: ${model}`, "success");
+                        break;
+                    } else {
+                        const errJson = await response.json().catch(() => ({}));
+                        lastError = new Error(errJson.error?.message || `Status ${response.status}`);
+                        logSystem(`Gagal menggunakan model ${model}: ${lastError.message}`, "warn");
+                    }
+                } catch (err) {
+                    lastError = err;
+                    logSystem(`Gagal menghubungi model ${model}: ${err.message}`, "warn");
+                }
+            }
+
+            try {
+                if (!success) {
+                    throw lastError || new Error("Semua model gagal memproses naskah.");
+                }
+
+                document.getElementById("loading-bar").style.width = "80%";
+                
+                // Parse returned JSON candidate
+                const rawJsonText = responseData.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!rawJsonText) {
+                    throw new Error("Gagal menerima hasil teks terstruktur dari Gemini.");
+                }
+
+                const parsedScript = JSON.parse(rawJsonText);
+
+                // Render structured cards to preview UI
+                outputBlocks.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
+                            <span class="text-[10px] font-bold text-indigo-600 block mb-1 uppercase tracking-wider">Judul Konten</span>
+                            <h5 id="out-judul" class="font-black text-slate-800 text-sm leading-snug">${parsedScript.judul}</h5>
+                        </div>
+                        <div class="p-4 bg-orange-50/50 rounded-xl border border-orange-100 shadow-sm">
+                            <span class="text-[10px] font-bold text-orange-600 block mb-1 uppercase tracking-wider">Hook Pembuka (3 Detik Pertama)</span>
+                            <p id="out-hook" class="font-bold text-slate-800 text-xs leading-relaxed">"${parsedScript.hook}"</p>
+                        </div>
+                        <div class="p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
+                            <span class="text-[10px] font-bold text-indigo-600 block mb-1 uppercase tracking-wider">Isi Naskah Utama</span>
+                            <p id="out-isi" class="text-slate-600 text-xs leading-relaxed font-medium">${parsedScript.isiIklan}</p>
+                        </div>
+                        <div class="p-4 bg-emerald-50/50 rounded-xl border border-emerald-100 shadow-sm">
+                            <span class="text-[10px] font-bold text-emerald-600 block mb-1 uppercase tracking-wider">Call to Action (CTA)</span>
+                            <p id="out-cta" class="font-bold text-slate-800 text-xs leading-relaxed">"${parsedScript.cta}"</p>
+                        </div>
+                    </div>
+                `;
+
+                // Enable utility buttons
+                document.getElementById("ai-copy-script").removeAttribute("disabled");
+                document.getElementById("ai-apply-script").removeAttribute("disabled");
+
+                document.getElementById("loading-bar").style.width = "100%";
+                showToast("Naskah sukses diracik oleh Gemini AI!", "success");
+                logSystem(`Naskah promosi "${parsedScript.judul}" siap digunakan.`, "success");
+
+            } catch (err) {
+                console.error(err);
+                showToast(err.message || "Gagal menghubungi Gemini AI.", "error");
+                outputBlocks.innerHTML = `
+                    <div class="text-center py-20 text-rose-500 space-y-2">
+                        <i data-lucide="alert-triangle" class="w-10 h-10 mx-auto"></i>
+                        <p class="text-xs font-bold">Gagal memproses skrip. Silakan cek koneksi atau validitas API Key.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+            } finally {
+                btn.removeAttribute("disabled");
+                btn.innerHTML = originalHTML;
+                lucide.createIcons();
+                setTimeout(() => {
+                    document.getElementById("loading-bar").style.width = "0%";
+                }, 300);
+            }
+        }
+
+        function copyAIScriptToClipboard() {
+            const hook = document.getElementById("out-hook")?.textContent || "";
+            const isi = document.getElementById("out-isi")?.textContent || "";
+            const cta = document.getElementById("out-cta")?.textContent || "";
+
+            const completeNaskah = `${hook.replace(/"/g, '')} \n\n${isi} \n\n${cta.replace(/"/g, '')}`;
+            
+            // Safe copy rule for iframe
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = completeNaskah;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+
+            showToast("Naskah berhasil disalin ke clipboard!", "success");
+        }
+
+        function applyAIScriptToEditor() {
+            const hook = document.getElementById("out-hook")?.textContent || "";
+            const isi = document.getElementById("out-isi")?.textContent || "";
+            const cta = document.getElementById("out-cta")?.textContent || "";
+
+            const completeNaskah = `${hook.replace(/"/g, '')} ${isi} ${cta.replace(/"/g, '')}`;
+            
+            document.getElementById("text-input").value = completeNaskah;
+            updateCharAndDuration();
+            localStorage.setItem("vora_draft", completeNaskah);
+            document.getElementById("current-draft-indicator").classList.remove("hidden");
+
+            // Switch to Voice Generator workspace
+            switchView("generator");
+            showToast("Naskah diterapkan ke Voice Editor!", "success");
+        }
+    </script>
+</body>
+</html>
